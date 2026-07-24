@@ -1,0 +1,138 @@
+import { Helmet } from "react-helmet-async";
+import { motion } from "framer-motion";
+import { fadeUp, viewportOnce } from "../animations/variants";
+import { Mail, MapPin, Phone } from "lucide-react";
+import { SITE } from "../constants/nav";
+import GlassCard from "../components/ui/GlassCard";
+import Button from "../components/ui/Button";
+
+export default function Contact() {
+  return (
+    <>
+      <Helmet>
+        <title>Contact — Briams Technologies</title>
+        <meta
+          name="description"
+          content="Get in touch with Briams Technologies for enterprise software solutions, ERPs, and IT consultancy."
+        />
+      </Helmet>
+
+      <section className="pt-40 pb-20 bg-bg overflow-hidden relative">
+        <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-briams-orange/5 rounded-full blur-[150px] pointer-events-none" />
+        <div className="container-section relative z-10 text-center">
+          <motion.span
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-briams-cyan mb-6 font-semibold bg-briams-cyan/10 border border-briams-cyan/20 px-3 py-1.5 rounded-full"
+          >
+            Contact
+          </motion.span>
+          <motion.h1
+            variants={fadeUp}
+            custom={0.08}
+            initial="hidden"
+            animate="show"
+            className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight text-text-primary"
+          >
+            Let's discuss your next project.
+          </motion.h1>
+        </div>
+      </section>
+
+      <section className="pb-32 bg-bg relative z-10">
+        <div className="container-section">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="show"
+              viewport={viewportOnce}
+            >
+              <h2 className="text-3xl font-bold text-text-primary mb-6">
+                Send a message
+              </h2>
+              <form className="space-y-5">
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-text-secondary">First name</label>
+                    <input type="text" className="input-glass" placeholder="John" />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-text-secondary">Last name</label>
+                    <input type="text" className="input-glass" placeholder="Doe" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-text-secondary">Email address</label>
+                  <input type="email" className="input-glass" placeholder="john@company.com" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-text-secondary">Message</label>
+                  <textarea
+                    rows={5}
+                    className="input-glass resize-none"
+                    placeholder="Tell us about your project..."
+                  />
+                </div>
+                <Button type="submit" size="lg" className="w-full justify-center mt-2">
+                  Send message
+                </Button>
+              </form>
+            </motion.div>
+
+            <motion.div
+              variants={fadeUp}
+              custom={0.2}
+              initial="hidden"
+              whileInView="show"
+              viewport={viewportOnce}
+              className="lg:pt-14"
+            >
+              <GlassCard className="p-8 sm:p-10">
+                <h3 className="text-xl font-bold text-text-primary mb-8">
+                  Direct contact
+                </h3>
+                <div className="space-y-8">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-surface border border-card-border flex items-center justify-center shrink-0">
+                      <Mail size={20} className="text-briams-blue" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-text-primary">Email</p>
+                      <a href={`mailto:${SITE.email}`} className="text-text-secondary hover:text-briams-blue transition-colors mt-1 block">
+                        {SITE.email}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-surface border border-card-border flex items-center justify-center shrink-0">
+                      <Phone size={20} className="text-briams-blue" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-text-primary">Phone</p>
+                      <a href={`tel:${SITE.phone}`} className="text-text-secondary hover:text-briams-blue transition-colors mt-1 block">
+                        {SITE.phone}
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-surface border border-card-border flex items-center justify-center shrink-0">
+                      <MapPin size={20} className="text-briams-blue" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-text-primary">Office</p>
+                      <p className="text-text-secondary mt-1 max-w-[200px] leading-relaxed">
+                        {SITE.address}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </GlassCard>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
