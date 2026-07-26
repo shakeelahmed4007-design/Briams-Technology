@@ -35,7 +35,7 @@ export default function Products() {
             animate="show"
             className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold tracking-tight leading-[1.05] text-text-primary"
           >
-            Software that becomes infrastructure.
+            Software that becomes <span className="text-gradient-cta font-extrabold">infrastructure.</span>
           </motion.h1>
           <motion.p
             variants={fadeUp}

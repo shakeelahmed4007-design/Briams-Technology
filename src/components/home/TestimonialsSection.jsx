@@ -36,12 +36,12 @@ export default function TestimonialsSection() {
                     "{t.quote}"
                   </p>
                   <div className="mt-8 pt-6 border-t border-card-border flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-briams-blue/10 flex items-center justify-center font-display font-bold text-briams-blue text-lg border border-briams-blue/20">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-briams-orange/20 via-briams-gold/20 to-briams-blue/20 flex items-center justify-center font-display font-extrabold text-briams-orange text-lg border border-briams-orange/30 shadow-xs">
                       {t.name[0]}
                     </div>
                     <div>
-                      <p className="font-bold text-text-primary text-sm">{t.name}</p>
-                      <p className="text-xs font-mono uppercase tracking-wider text-text-muted mt-1 font-semibold">
+                      <p className="font-bold text-text-primary text-sm group-hover:text-briams-blue transition-colors">{t.name}</p>
+                      <p className="text-xs font-mono uppercase tracking-wider text-briams-blue mt-0.5 font-bold">
                         {t.role}
                       </p>
                     </div>

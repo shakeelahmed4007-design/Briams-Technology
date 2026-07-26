@@ -43,11 +43,11 @@ export default function Blog() {
             animate="show"
             className="max-w-3xl"
           >
-            <span className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-briams-blue font-semibold mb-6 bg-briams-blue/10 border border-briams-blue/20 px-3 py-1.5 rounded-full">
+            <span className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-briams-blue font-bold mb-6 bg-gradient-to-r from-briams-cyan/15 via-briams-blue/10 to-briams-orange/15 border border-briams-cyan/30 px-3.5 py-1.5 rounded-full shadow-xs">
               Briams Engineering Blog
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight text-text-primary">
-              Insights on software, architecture & design.
+              Insights on <span className="text-gradient-tech font-extrabold">software</span>, <span className="text-gradient-cta font-extrabold">architecture</span> & design.
             </h1>
             <p className="mt-6 text-lg text-text-secondary font-medium leading-relaxed max-w-2xl mx-auto">
               Deep dives into ERP architecture, telehealth infrastructure, cloud scale, and modern web application development.

@@ -31,22 +31,22 @@ export default function ProductCard({ product, index = 0 }) {
               {product.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-surface border border-card-border text-text-muted transition-colors duration-300 group-hover:bg-briams-blue/5 group-hover:border-briams-blue/20 group-hover:text-briams-blue font-semibold"
+                  className="text-[11px] font-mono uppercase tracking-wider px-2.5 py-1 rounded-full bg-surface border border-card-border text-text-secondary transition-colors duration-300 group-hover:bg-briams-blue/10 group-hover:border-briams-blue/30 group-hover:text-briams-blue font-bold"
                 >
                   {tag}
                 </span>
               ))}
             </div>
             
-            <h3 className="text-2xl font-semibold text-text-primary tracking-tight">
+            <h3 className="text-2xl font-bold text-text-primary tracking-tight group-hover:text-briams-blue transition-colors">
               {product.name}
             </h3>
             
-            <p className="mt-2 text-briams-blue font-semibold text-sm">
+            <p className="mt-2 text-gradient-cta font-bold text-sm">
               {product.tagline}
             </p>
             
-            <p className="mt-4 text-[15px] text-text-muted leading-relaxed font-medium">
+            <p className="mt-4 text-[15px] text-text-secondary leading-relaxed font-medium">
               {product.description}
             </p>
           </div>

@@ -29,11 +29,11 @@ export default function Footer() {
                   style={{ imageRendering: "-webkit-optimize-contrast" }}
                 />
               </div>
-              <span className="font-display font-bold text-xl tracking-tight text-white group-hover:text-briams-orange transition-colors">
-                Briams Technologies
+              <span className="font-display font-extrabold text-xl tracking-tight text-white group-hover:text-gradient-cta transition-colors">
+                Briams <span className="text-gradient-cta">Technologies</span>
               </span>
             </Link>
-            <p className="text-white/60 text-[15px] font-medium max-w-sm leading-relaxed">
+            <p className="text-white/80 text-[15px] font-medium max-w-sm leading-relaxed">
               {SITE.tagline}
             </p>
             <div className="flex items-center gap-4 mt-8">
@@ -44,7 +44,7 @@ export default function Footer() {
                     key={key}
                     href={href}
                     aria-label={key}
-                    className="w-10 h-10 rounded-full bg-white/5 hover:bg-briams-orange hover:text-white border border-white/10 hover:border-briams-orange flex items-center justify-center transition-all duration-300 shadow-sm"
+                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-gradient-to-r hover:from-briams-orange hover:to-briams-gold hover:text-white border border-white/15 flex items-center justify-center transition-all duration-300 shadow-sm"
                   >
                     <Icon size={16} />
                   </a>
@@ -54,7 +54,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-mono font-semibold uppercase tracking-[0.15em] text-white/40 mb-6">
+            <h4 className="text-xs font-mono font-bold uppercase tracking-[0.15em] text-briams-cyan mb-6">
               Navigate
             </h4>
             <ul className="space-y-4">
@@ -62,7 +62,7 @@ export default function Footer() {
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-[15px] text-white/70 hover:text-briams-orange transition-colors font-medium"
+                    className="text-[15px] text-white/80 hover:text-briams-orange transition-colors font-medium"
                   >
                     {link.label}
                   </Link>
@@ -72,23 +72,23 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-xs font-mono font-semibold uppercase tracking-[0.15em] text-white/40 mb-6">
+            <h4 className="text-xs font-mono font-bold uppercase tracking-[0.15em] text-briams-orange mb-6">
               Contact
             </h4>
-            <ul className="space-y-4 text-[15px] font-medium text-white/70">
-              <li className="hover:text-white transition-colors cursor-default">{SITE.email}</li>
-              <li className="hover:text-white transition-colors cursor-default">{SITE.phone}</li>
+            <ul className="space-y-4 text-[15px] font-medium text-white/80">
+              <li className="hover:text-briams-cyan transition-colors cursor-default">{SITE.email}</li>
+              <li className="hover:text-briams-gold transition-colors cursor-default">{SITE.phone}</li>
               <li className="hover:text-white transition-colors cursor-default">{SITE.address}</li>
             </ul>
           </div>
         </div>
 
         <div className="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/40 font-mono tracking-wide">
+          <p className="text-xs text-white/50 font-mono tracking-wide">
             © {new Date().getFullYear()} Briams Technologies. All rights reserved.
           </p>
-          <p className="text-xs text-white/40 font-mono tracking-wide">
-            Built with care in Karachi.
+          <p className="text-xs text-white/50 font-mono tracking-wide">
+            Built with care in <span className="text-briams-orange font-bold">Karachi</span>.
           </p>
         </div>
       </div>

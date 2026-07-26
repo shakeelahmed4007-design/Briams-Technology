@@ -36,7 +36,7 @@ export default function Services() {
             animate="show"
             className="text-4xl sm:text-5xl lg:text-7xl font-display font-bold tracking-tight leading-[1.05] text-text-primary"
           >
-            Seven disciplines, one accountable team.
+            Seven disciplines, <span className="text-gradient-tech font-extrabold">one accountable team.</span>
           </motion.h1>
           <motion.p
             variants={fadeUp}
@@ -56,6 +56,14 @@ export default function Services() {
           {SERVICES.map((service, i) => {
             const Icon = service.icon;
             const reversed = i % 2 === 1;
+            const themes = [
+              { icon: "text-briams-orange", bullet: "bg-briams-orange", titleHover: "hover:text-briams-orange", capHover: "hover:border-briams-orange/30 hover:bg-briams-orange/5" },
+              { icon: "text-briams-blue", bullet: "bg-briams-blue", titleHover: "hover:text-briams-blue", capHover: "hover:border-briams-blue/30 hover:bg-briams-blue/5" },
+              { icon: "text-briams-cyan", bullet: "bg-briams-cyan", titleHover: "hover:text-briams-cyan", capHover: "hover:border-briams-cyan/30 hover:bg-briams-cyan/5" },
+              { icon: "text-cure-green", bullet: "bg-cure-green", titleHover: "hover:text-cure-green", capHover: "hover:border-cure-green/30 hover:bg-cure-green/5" },
+              { icon: "text-briams-gold", bullet: "bg-briams-gold", titleHover: "hover:text-briams-gold", capHover: "hover:border-briams-gold/30 hover:bg-briams-gold/5" },
+            ];
+            const theme = themes[i % themes.length];
             return (
               <motion.div
                 key={service.id}
@@ -74,9 +82,9 @@ export default function Services() {
                 >
                   <div className={reversed ? "[direction:ltr]" : ""}>
                     <div className="w-14 h-14 rounded-2xl bg-surface border border-card-border flex items-center justify-center mb-6 shadow-sm">
-                      <Icon size={26} className="text-briams-orange" />
+                      <Icon size={26} className={theme.icon} />
                     </div>
-                    <h2 className="text-3xl font-bold text-text-primary tracking-tight group-hover:text-briams-blue transition-colors">
+                    <h2 className={`text-3xl font-bold text-text-primary tracking-tight ${theme.titleHover} transition-colors`}>
                       {service.title}
                     </h2>
                     <p className="mt-4 text-text-secondary leading-relaxed text-[15px] font-medium">
@@ -92,10 +100,10 @@ export default function Services() {
                     {service.capabilities.map((cap) => (
                       <div
                         key={cap}
-                        className="flex items-center gap-3 px-5 py-4 rounded-xl glass border border-card-border hover:border-briams-cyan/30 hover:bg-briams-cyan/5 transition-colors duration-300"
+                        className={`flex items-center gap-3 px-5 py-4 rounded-xl glass border border-card-border ${theme.capHover} transition-colors duration-300`}
                       >
-                        <span className="w-1.5 h-1.5 rounded-full bg-briams-cyan shrink-0" />
-                        <span className="text-[15px] font-semibold text-text-primary">{cap}</span>
+                        <span className={`w-2 h-2 rounded-full ${theme.bullet} shrink-0`} />
+                        <span className="text-[15px] font-bold text-text-primary">{cap}</span>
                       </div>
                     ))}
                   </div>

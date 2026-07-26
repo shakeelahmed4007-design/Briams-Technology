@@ -3,10 +3,10 @@ import { fadeUp, viewportOnce } from "../../animations/variants";
 import StatCounter from "../ui/StatCounter";
 
 const STATS = [
-  { value: 50, suffix: "+", label: "Projects Delivered" },
-  { value: 99, suffix: "%", label: "Client Retention" },
-  { value: 15, suffix: "+", label: "Enterprise Clients" },
-  { value: 5, suffix: "M+", label: "Lines of Code" },
+  { value: 50, suffix: "+", label: "Projects Delivered", gradient: "text-gradient-cta" },
+  { value: 99, suffix: "%", label: "Client Retention", gradient: "text-gradient-tech" },
+  { value: 15, suffix: "+", label: "Enterprise Clients", gradient: "text-gradient-emerald" },
+  { value: 5, suffix: "M+", label: "Lines of Code", gradient: "text-gradient-purple" },
 ];
 
 export default function Stats() {
@@ -26,12 +26,12 @@ export default function Stats() {
                 i % 2 === 1 ? "md:border-l-0" : "" // Handle 2-col to 4-col borders
               }`}
             >
-              <div className="text-4xl sm:text-5xl font-display font-bold text-briams-blue">
-                <StatCounter value={stat.value} suffix={stat.suffix} />
-              </div>
-              <p className="mt-3 text-[13px] font-mono tracking-wider uppercase text-text-muted font-semibold">
-                {stat.label}
-              </p>
+              <StatCounter
+                value={stat.value}
+                suffix={stat.suffix}
+                label={stat.label}
+                gradientClass={stat.gradient}
+              />
             </motion.div>
           ))}
         </div>

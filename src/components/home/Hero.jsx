@@ -41,17 +41,17 @@ export default function Hero() {
           className="max-w-4xl w-full"
         >
           <motion.div variants={itemVariants}>
-            <span className="inline-block px-4 py-1.5 rounded-full bg-briams-cyan/10 border border-briams-cyan/20 text-xs font-mono uppercase tracking-wider text-briams-cyan mb-8 font-semibold shadow-sm hover:scale-105 transition-transform cursor-default">
-              Based in Karachi. Building for the world.
+            <span className="inline-block px-4.5 py-1.5 rounded-full bg-gradient-to-r from-briams-cyan/15 via-briams-blue/10 to-briams-orange/15 border border-briams-cyan/30 text-xs font-mono uppercase tracking-wider text-briams-blue mb-8 font-bold shadow-xs hover:scale-105 transition-transform cursor-default">
+              Based in Karachi. <span className="text-briams-orange font-extrabold">Building for the world.</span>
             </span>
           </motion.div>
           
           <motion.h1 variants={itemVariants} className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold tracking-tight leading-[1.05] text-text-primary">
-            We don't just build software. We build{" "}
-            <span className="text-gradient-cta relative inline-block">
+            We don't just build <span className="text-gradient-tech font-extrabold">software</span>. We build{" "}
+            <span className="text-gradient-cta relative inline-block font-extrabold">
               businesses.
               <motion.span 
-                className="absolute -bottom-2 left-0 w-full h-[3px] bg-briams-orange rounded-full"
+                className="absolute -bottom-2 left-0 w-full h-[3px] bg-gradient-to-r from-briams-orange via-briams-gold to-briams-orange rounded-full"
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
@@ -61,8 +61,8 @@ export default function Hero() {
           </motion.h1>
           
           <motion.p variants={itemVariants} className="mt-10 text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed font-medium">
-            From high-performance web applications to full-scale ERP platforms,
-            we are the engineering team that executes with precision.
+            From <span className="text-briams-blue font-semibold">high-performance web applications</span> to{" "}
+            <span className="text-briams-orange font-semibold">full-scale ERP platforms</span>, we are the engineering team that executes with precision.
           </motion.p>
           
           <motion.div variants={itemVariants} className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-5">

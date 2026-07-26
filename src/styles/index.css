@@ -17,8 +17,10 @@
   --color-card-border: rgba(14, 27, 51, 0.08); /* Deep Navy subtle border */
   
   --color-text-primary: #0E1B33;               /* Deep Navy body text & headings */
-  --color-text-secondary: #475569;             /* Slate text secondary */
-  --color-text-muted: #64748B;                 /* Muted text */
+  --color-text-secondary: #334155;             /* Darker Slate text secondary for crisp readability */
+  --color-text-muted: #475569;                 /* Slate muted text */
+  --color-accent: #F2711F;                     /* Brand Accent */
+  --color-success: #2E9E5B;                    /* Brand Success */
   
   /* Palette Tokens */
   --color-briams-orange: #F2711F;              /* Primary accent — icons, highlights, markers */
@@ -40,8 +42,10 @@
   --color-card-border: rgba(18, 63, 99, 0.1);  /* Cure Navy subtle border */
   
   --color-text-primary: #123F63;               /* CureVirtual Navy for headings & text */
-  --color-text-secondary: #475569;             /* Slate secondary text */
-  --color-text-muted: #64748B;                 /* Muted text */
+  --color-text-secondary: #334155;             /* Slate secondary text */
+  --color-text-muted: #475569;                 /* Muted text */
+  --color-accent: #F2711F;                     /* Cure Accent */
+  --color-success: #2E9E5B;                    /* Cure Success */
   
   /* Palette Tokens */
   --color-cure-orange: #F2711F;                /* Wordmark color & primary CTA */
@@ -138,3 +142,60 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(242, 113, 31, 0.6);
 }
+
+/* Color Variant & Text Gradient Utilities */
+@layer utilities {
+  .text-gradient-cta {
+    background: linear-gradient(135deg, #F2711F 0%, #FFB627 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .text-gradient-tech {
+    background: linear-gradient(135deg, #175FC4 0%, #2FC6EA 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .text-gradient-briams {
+    background: linear-gradient(135deg, #F2711F 0%, #175FC4 50%, #2FC6EA 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .text-gradient-accent {
+    background: linear-gradient(135deg, #F2711F 0%, #FFB627 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .text-gradient-cure {
+    background: linear-gradient(135deg, #123F63 0%, #2E9E5B 50%, #F2711F 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .text-gradient-purple {
+    background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .text-gradient-emerald {
+    background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-glow-orange {
+    color: #F2711F;
+    text-shadow: 0 0 20px rgba(242, 113, 31, 0.35);
+  }
+  .text-glow-blue {
+    color: #175FC4;
+    text-shadow: 0 0 20px rgba(23, 95, 196, 0.35);
+  }
+  .text-glow-cyan {
+    color: #2FC6EA;
+    text-shadow: 0 0 20px rgba(47, 198, 234, 0.35);
+  }
+  .text-glow-green {
+    color: #2E9E5B;
+    text-shadow: 0 0 20px rgba(46, 158, 91, 0.35);
+  }
+}
+

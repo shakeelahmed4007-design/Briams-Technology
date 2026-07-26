@@ -21,7 +21,7 @@ export default function SectionTitle({
       } ${className}`}
     >
       {eyebrow && (
-        <span className="inline-block font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] text-accent font-semibold mb-4 border border-accent/20 bg-accent/5 px-3 py-1 rounded-full">
+        <span className="inline-block font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] text-briams-orange font-bold mb-4 border border-briams-orange/20 bg-gradient-to-r from-briams-orange/10 via-briams-blue/5 to-briams-cyan/10 px-3.5 py-1 rounded-full shadow-xs">
           {eyebrow}
         </span>
       )}
@@ -30,7 +30,7 @@ export default function SectionTitle({
       </h2>
       {description && (
         <p
-          className={`mt-6 text-base sm:text-lg text-text-muted leading-relaxed ${
+          className={`mt-6 text-base sm:text-lg text-text-secondary leading-relaxed font-medium ${
             isCenter ? "max-w-2xl" : "max-w-xl"
           }`}
         >

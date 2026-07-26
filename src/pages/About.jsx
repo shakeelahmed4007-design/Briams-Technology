@@ -59,9 +59,9 @@ export default function About() {
             variants={fadeUp}
             initial="hidden"
             animate="show"
-            className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-briams-cyan mb-6 font-semibold bg-briams-cyan/10 border border-briams-cyan/20 px-3 py-1.5 rounded-full"
+            className="inline-block font-mono text-xs uppercase tracking-[0.2em] text-briams-blue mb-6 font-bold bg-gradient-to-r from-briams-cyan/15 via-briams-blue/10 to-briams-orange/15 border border-briams-cyan/30 px-3.5 py-1.5 rounded-full shadow-xs"
           >
-            About
+            About Us
           </motion.span>
           <motion.h1
             variants={fadeUp}
@@ -70,7 +70,7 @@ export default function About() {
             animate="show"
             className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight leading-[1.05] text-text-primary"
           >
-            We started as engineers frustrated with fragile software.
+            We started as engineers frustrated with <span className="text-gradient-cta font-extrabold">fragile software.</span>
           </motion.h1>
           <motion.p
             variants={fadeUp}
@@ -82,7 +82,7 @@ export default function About() {
             Briams Technologies was founded by engineers who'd spent years
             inheriting systems that broke under real load. Today we build
             software, apps and ERP platforms for clients who need
-            infrastructure that holds — and we built CureVirtual to prove the
+            infrastructure that holds — and we built <span className="text-gradient-cure font-bold">CureVirtual</span> to prove the
             same discipline works in healthcare.
           </motion.p>
         </div>
@@ -101,6 +101,13 @@ export default function About() {
           <div className="mt-14 grid sm:grid-cols-2 gap-6">
             {VALUES.map((v, i) => {
               const Icon = v.icon;
+              const valueStyles = [
+                { iconColor: "text-briams-orange", hoverTitle: "group-hover:text-briams-orange", border: "group-hover:border-briams-orange/40" },
+                { iconColor: "text-briams-blue", hoverTitle: "group-hover:text-briams-blue", border: "group-hover:border-briams-blue/40" },
+                { iconColor: "text-briams-cyan", hoverTitle: "group-hover:text-briams-cyan", border: "group-hover:border-briams-cyan/40" },
+                { iconColor: "text-cure-green", hoverTitle: "group-hover:text-cure-green", border: "group-hover:border-cure-green/40" },
+              ];
+              const style = valueStyles[i % valueStyles.length];
               return (
                 <motion.div
                   key={v.title}
@@ -111,10 +118,10 @@ export default function About() {
                   viewport={viewportOnce}
                 >
                   <GlassCard className="p-8 h-full flex flex-col group">
-                    <div className="w-12 h-12 rounded-2xl bg-surface border border-card-border flex items-center justify-center mb-6 group-hover:scale-110 group-hover:border-briams-orange/40 transition-all duration-300">
-                      <Icon size={22} className="text-briams-orange" />
+                    <div className={`w-12 h-12 rounded-2xl bg-surface border border-card-border flex items-center justify-center mb-6 group-hover:scale-110 ${style.border} transition-all duration-300`}>
+                      <Icon size={22} className={style.iconColor} />
                     </div>
-                    <h3 className="text-xl font-bold text-text-primary tracking-tight group-hover:text-briams-blue transition-colors">
+                    <h3 className={`text-xl font-bold text-text-primary tracking-tight ${style.hoverTitle} transition-colors`}>
                       {v.title}
                     </h3>
                     <p className="mt-3 text-[15px] text-text-secondary leading-relaxed font-medium">
@@ -142,13 +149,13 @@ export default function About() {
                 viewport={viewportOnce}
                 className="text-center group"
               >
-                <div className="w-24 h-24 mx-auto rounded-full glass border-card-border flex items-center justify-center font-display text-3xl font-bold text-briams-blue group-hover:text-white group-hover:bg-briams-blue transition-all duration-500">
+                <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-briams-orange/15 via-briams-gold/15 to-briams-blue/15 border border-briams-orange/30 flex items-center justify-center font-display text-3xl font-extrabold text-briams-orange group-hover:text-white group-hover:bg-gradient-cta transition-all duration-500 shadow-md">
                   {t.name.split(" ").map((n) => n[0]).join("")}
                 </div>
-                <h4 className="mt-6 font-bold text-text-primary text-lg">
+                <h4 className="mt-6 font-bold text-text-primary text-lg group-hover:text-briams-blue transition-colors">
                   {t.name}
                 </h4>
-                <p className="text-sm font-mono tracking-wider uppercase text-text-muted mt-1 font-semibold">
+                <p className="text-sm font-mono tracking-wider uppercase text-briams-blue mt-1 font-bold">
                   {t.role}
                 </p>
               </motion.div>

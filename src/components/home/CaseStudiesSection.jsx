@@ -35,16 +35,16 @@ export default function CaseStudiesSection() {
                   
                   <div>
                     <div className="flex items-center gap-4 mb-6 text-sm font-mono tracking-wider font-semibold">
-                      <span className="text-briams-blue uppercase">{work.client}</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-card-border" />
-                      <span className="text-text-muted uppercase">{work.industry}</span>
+                      <span className="text-briams-orange uppercase font-bold">{work.client}</span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-briams-orange/40" />
+                      <span className="text-briams-blue uppercase font-bold">{work.industry}</span>
                     </div>
 
                     <h3 className="text-2xl font-bold text-text-primary tracking-tight group-hover:text-briams-blue transition-colors duration-300">
                       {work.title}
                     </h3>
                     
-                    <p className="mt-4 text-[15px] text-text-muted leading-relaxed font-medium">
+                    <p className="mt-4 text-[15px] text-text-secondary leading-relaxed font-medium">
                       {work.description}
                     </p>
 
@@ -52,7 +52,7 @@ export default function CaseStudiesSection() {
                       {work.tag.split(' · ').map((tag) => (
                         <span
                           key={tag}
-                          className="px-3 py-1 rounded-full border border-card-border bg-surface text-text-secondary text-xs font-mono uppercase tracking-wider font-semibold"
+                          className="px-3 py-1 rounded-full border border-card-border bg-surface text-text-secondary text-xs font-mono uppercase tracking-wider font-bold transition-colors group-hover:border-briams-blue/30 group-hover:text-briams-blue"
                         >
                           {tag}
                         </span>
@@ -60,7 +60,7 @@ export default function CaseStudiesSection() {
                     </div>
                   </div>
 
-                  <div className="mt-10 pt-6 border-t border-card-border flex items-center justify-between text-briams-blue font-semibold">
+                  <div className="mt-10 pt-6 border-t border-card-border flex items-center justify-between text-briams-orange font-bold group-hover:text-briams-blue transition-colors">
                     <span className="group-hover:translate-x-1 transition-transform duration-300">Read case study</span>
                     <ArrowUpRight
                       size={20}

@@ -53,7 +53,7 @@ export default function BookConsultation() {
             animate="show"
             className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight text-text-primary"
           >
-            Book a 30-minute consultation.
+            Book a 30-minute <span className="text-gradient-cta font-extrabold">consultation.</span>
           </motion.h1>
           <motion.p
             variants={fadeUp}

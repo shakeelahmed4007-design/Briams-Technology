@@ -35,7 +35,7 @@ export default function Contact() {
             animate="show"
             className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight text-text-primary"
           >
-            Let's discuss your next project.
+            Let's discuss <span className="text-gradient-cta font-extrabold">your next project.</span>
           </motion.h1>
         </div>
       </section>
@@ -95,34 +95,34 @@ export default function Contact() {
                 </h3>
                 <div className="space-y-8">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-surface border border-card-border flex items-center justify-center shrink-0">
-                      <Mail size={20} className="text-briams-blue" />
+                    <div className="w-12 h-12 rounded-xl bg-surface border border-card-border flex items-center justify-center shrink-0 shadow-xs">
+                      <Mail size={20} className="text-briams-orange" />
                     </div>
                     <div>
-                      <p className="font-semibold text-text-primary">Email</p>
-                      <a href={`mailto:${SITE.email}`} className="text-text-secondary hover:text-briams-blue transition-colors mt-1 block">
+                      <p className="font-bold text-text-primary">Email</p>
+                      <a href={`mailto:${SITE.email}`} className="text-briams-orange font-semibold hover:underline mt-1 block">
                         {SITE.email}
                       </a>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-surface border border-card-border flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-surface border border-card-border flex items-center justify-center shrink-0 shadow-xs">
                       <Phone size={20} className="text-briams-blue" />
                     </div>
                     <div>
-                      <p className="font-semibold text-text-primary">Phone</p>
-                      <a href={`tel:${SITE.phone}`} className="text-text-secondary hover:text-briams-blue transition-colors mt-1 block">
+                      <p className="font-bold text-text-primary">Phone</p>
+                      <a href={`tel:${SITE.phone}`} className="text-briams-blue font-semibold hover:underline mt-1 block">
                         {SITE.phone}
                       </a>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-surface border border-card-border flex items-center justify-center shrink-0">
-                      <MapPin size={20} className="text-briams-blue" />
+                    <div className="w-12 h-12 rounded-xl bg-surface border border-card-border flex items-center justify-center shrink-0 shadow-xs">
+                      <MapPin size={20} className="text-briams-cyan" />
                     </div>
                     <div>
-                      <p className="font-semibold text-text-primary">Office</p>
-                      <p className="text-text-secondary mt-1 max-w-[200px] leading-relaxed">
+                      <p className="font-bold text-text-primary">Office</p>
+                      <p className="text-text-secondary font-medium mt-1 max-w-[200px] leading-relaxed">
                         {SITE.address}
                       </p>
                     </div>

@@ -12,6 +12,8 @@ export default {
         "text-primary": "var(--color-text-primary)",
         "text-secondary": "var(--color-text-secondary)",
         "text-muted": "var(--color-text-muted)",
+        accent: "var(--color-accent)",
+        success: "var(--color-success)",
 
         /* 1.1 Briams Technologies Palette */
         briams: {
