@@ -45,10 +45,32 @@ const options = {
 };
 
 // ── Singleton client ──────────────────────────────────────────────────────────
-export const supabase = createClient(supabaseUrl, supabaseAnonKey, options);
-
+let supabase;
 // Export a helper flag so UI can know whether Supabase is configured
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+
+if (isSupabaseConfigured) {
+  supabase = createClient(supabaseUrl, supabaseAnonKey, options);
+} else {
+  // Provide a minimal stub to avoid runtime crashes when env vars are missing (e.g., on Vercel before secrets set)
+  const noop = async () => ({ data: null, error: { message: 'Supabase not configured' } });
+  const stubFrom = () => ({ insert: noop, update: noop, select: noop, delete: noop });
+  const stubStorage = () => ({ upload: noop, getPublicUrl: () => ({ data: { publicUrl: '' } }) });
+  supabase = {
+    from: stubFrom,
+    auth: {
+      signInWithPassword: noop,
+      signUp: noop,
+      signOut: noop,
+      getUser: noop,
+      getSession: noop,
+    },
+    storage: { from: stubStorage },
+    // allow existing helper code to call supabase.* without throwing
+  };
+}
+
+export { supabase };
 
 // ── Named helpers (convenience wrappers) ─────────────────────────────────────
 
