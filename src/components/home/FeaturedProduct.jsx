@@ -121,46 +121,51 @@ export default function FeaturedProduct() {
             </div>
 
             <div className="rounded-2xl bg-surface/80 border border-card-border min-h-[360px] sm:min-h-[400px] flex items-center justify-center relative z-10 overflow-hidden shadow-inner p-4 sm:p-6">
-              <div className="grid grid-cols-2 gap-4.5 w-full relative z-10">
+              <div className="grid grid-cols-2 gap-5 w-full relative z-10">
                 {MODULES.map((m, i) => {
                   const IconComponent = m.icon;
                   return (
+                    // Outer div: handles entrance animation (whileInView)
                     <motion.div
                       key={m.name}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: 0.2 + i * 0.1, duration: 0.5 }}
-                      animate={{ y: [0, -6, 0] }}
-                      transition={{
-                        repeat: Infinity,
-                        duration: m.floatDuration,
-                        ease: "easeInOut",
-                        delay: i * 0.3,
-                      }}
-                      whileHover={{ scale: 1.06, y: -8 }}
-                      className={`rounded-2xl bg-gradient-to-br ${m.gradient} border ${m.borderColor} p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 cursor-pointer shadow-sm relative group/card overflow-hidden`}
                     >
-                      {/* Subtle inner card glow on hover */}
-                      <div className="absolute inset-0 bg-white/40 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                      {/* Inner div: handles continuous float + hover */}
+                      <motion.div
+                        animate={{ y: [0, -6, 0] }}
+                        transition={{
+                          repeat: Infinity,
+                          duration: m.floatDuration,
+                          ease: "easeInOut",
+                          delay: i * 0.3,
+                        }}
+                        whileHover={{ scale: 1.06, y: -8 }}
+                        className={`rounded-2xl bg-gradient-to-br ${m.gradient} border ${m.borderColor} p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 cursor-pointer shadow-sm relative group/card overflow-hidden`}
+                      >
+                        {/* Subtle inner card glow on hover */}
+                        <div className="absolute inset-0 bg-white/40 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                      <div className="flex items-center justify-between mb-3">
-                        <div className={`w-10 h-10 rounded-xl ${m.iconBg} flex items-center justify-center shadow-xs transition-transform duration-300 group-hover/card:scale-110`}>
-                          <IconComponent size={20} />
+                        <div className="flex items-center justify-between mb-3">
+                          <div className={`w-10 h-10 rounded-xl ${m.iconBg} flex items-center justify-center shadow-xs transition-transform duration-300 group-hover/card:scale-110`}>
+                            <IconComponent size={20} />
+                          </div>
+                          <span className={`text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full border ${m.badgeColor} font-bold`}>
+                            {m.badge}
+                          </span>
                         </div>
-                        <span className={`text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full border ${m.badgeColor} font-bold`}>
-                          {m.badge}
-                        </span>
-                      </div>
 
-                      <div>
-                        <h3 className={`text-lg sm:text-xl font-bold font-display ${m.titleColor} tracking-tight`}>
-                          {m.name}
-                        </h3>
-                        <p className="text-xs text-text-secondary font-medium mt-1">
-                          {m.tagline}
-                        </p>
-                      </div>
+                        <div>
+                          <h3 className={`text-lg sm:text-xl font-bold font-display ${m.titleColor} tracking-tight`}>
+                            {m.name}
+                          </h3>
+                          <p className="text-xs text-text-secondary font-medium mt-1">
+                            {m.tagline}
+                          </p>
+                        </div>
+                      </motion.div>
                     </motion.div>
                   );
                 })}

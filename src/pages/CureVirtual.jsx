@@ -19,6 +19,7 @@ import "swiper/css/pagination";
 import { useState } from "react";
 import { fadeUp, fadeIn, scaleIn, slideRight, viewportOnce } from "../animations/variants";
 import { CURE_MODULES, CURE_PRICING } from "../data/products";
+import { createWaitlistEntry, isSupabaseConfigured } from "../lib/supabase";
 import { CURE_FAQ, TESTIMONIALS } from "../data/content";
 import GlassCard from "../components/ui/GlassCard";
 import FAQAccordion from "../components/ui/FAQAccordion";
@@ -929,10 +930,44 @@ function CureFAQSection() {
 function WaitlistSection() {
   const [email, setEmail] = useState("");
   const [joined, setJoined] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [serverError, setServerError] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setJoined(true);
+    setError("");
+    setServerError("");
+
+    if (!email) {
+      setError("Please enter your email.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      if (isSupabaseConfigured) {
+        await createWaitlistEntry({ email, created_at: new Date().toISOString() });
+      } else {
+        const pending = JSON.parse(localStorage.getItem('pendingWaitlist') || '[]');
+        pending.push({ email, created_at: new Date().toISOString() });
+        localStorage.setItem('pendingWaitlist', JSON.stringify(pending));
+      }
+      setJoined(true);
+      setEmail("");
+    } catch (err) {
+      setServerError(err.message || 'Failed to join waitlist.');
+      console.error('Waitlist insert error:', err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

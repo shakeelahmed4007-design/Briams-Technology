@@ -1,10 +1,12 @@
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { fadeUp, viewportOnce } from "../animations/variants";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { SITE } from "../constants/nav";
 import GlassCard from "../components/ui/GlassCard";
 import Button from "../components/ui/Button";
+import { createMessage, isSupabaseConfigured } from "../lib/supabase";
 
 export default function Contact() {
   return (
@@ -52,33 +54,7 @@ export default function Contact() {
               <h2 className="text-3xl font-bold text-text-primary mb-6">
                 Send a message
               </h2>
-              <form className="space-y-5">
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-text-secondary">First name</label>
-                    <input type="text" className="input-glass" placeholder="John" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-semibold text-text-secondary">Last name</label>
-                    <input type="text" className="input-glass" placeholder="Doe" />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-text-secondary">Email address</label>
-                  <input type="email" className="input-glass" placeholder="john@company.com" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-text-secondary">Message</label>
-                  <textarea
-                    rows={5}
-                    className="input-glass resize-none"
-                    placeholder="Tell us about your project..."
-                  />
-                </div>
-                <Button type="submit" size="lg" className="w-full justify-center mt-2">
-                  Send message
-                </Button>
-              </form>
+              <ContactForm />
             </motion.div>
 
             <motion.div
@@ -134,5 +110,142 @@ export default function Contact() {
         </div>
       </section>
     </>
+  );
+}
+
+function ContactForm() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setServerError("");
+    setSuccess(false);
+
+    if (!email || !message) {
+      setError("Please enter your email and message.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      if (isSupabaseConfigured) {
+        const { error } = await createMessage({
+          first_name: firstName || null,
+          last_name: lastName || null,
+          email,
+          message,
+          created_at: new Date().toISOString(),
+        });
+        if (error) {
+          setServerError(error.message || 'Failed to send message.');
+          console.error('Supabase insert error:', error);
+        } else {
+          setSuccess(true);
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setMessage("");
+        }
+      } else {
+        const pending = JSON.parse(localStorage.getItem('pendingMessages') || '[]');
+        pending.push({
+          first_name: firstName || null,
+          last_name: lastName || null,
+          email,
+          message,
+          created_at: new Date().toISOString(),
+        });
+        localStorage.setItem('pendingMessages', JSON.stringify(pending));
+        setSuccess(true);
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setMessage("");
+        console.warn('Supabase not configured — saved message locally.');
+      }
+    } catch (err) {
+      console.error(err);
+      setServerError(err.message || 'Unexpected error occurred.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form className="space-y-5" noValidate onSubmit={handleSubmit}>
+      {success && (
+        <div className="mb-4 rounded-xl border border-green-400/20 bg-green-500/10 p-4 text-sm text-green-700">
+          Your message has been sent successfully.
+        </div>
+      )}
+      {serverError && (
+        <div className="mb-4 rounded-xl border border-red-400/20 bg-red-500/10 p-4 text-sm text-red-700">
+          {serverError}
+        </div>
+      )}
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-text-secondary">First name</label>
+          <input
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className="input-glass"
+            placeholder="John"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-semibold text-text-secondary">Last name</label>
+          <input
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className="input-glass"
+            placeholder="Doe"
+          />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-semibold text-text-secondary">Email address</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="input-glass"
+          placeholder="john@company.com"
+        />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-semibold text-text-secondary">Message</label>
+        <textarea
+          rows={5}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="input-glass resize-none"
+          placeholder="Tell us about your project..."
+        />
+      </div>
+      {error && (
+        <p className="text-sm text-briams-orange font-medium">{error}</p>
+      )}
+      <Button type="submit" size="lg" className="w-full justify-center mt-2" disabled={loading}>
+        {loading ? 'Sending...' : 'Send message'}
+      </Button>
+    </form>
   );
 }

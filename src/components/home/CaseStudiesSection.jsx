@@ -29,7 +29,7 @@ export default function CaseStudiesSection() {
               whileInView="show"
               viewport={viewportOnce}
             >
-              <Link to={`/work/${work.id}`} className="block h-full group">
+              <Link to={`/work`} className="block h-full group">
                 <GlassCard className="p-8 h-full flex flex-col justify-between overflow-hidden relative">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-briams-blue/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform duration-500" />
                   

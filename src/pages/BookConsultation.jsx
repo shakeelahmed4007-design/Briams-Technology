@@ -4,13 +4,25 @@ import { fadeUp, viewportOnce } from "../animations/variants";
 import Button from "../components/ui/Button";
 
 import { useState } from "react";
+import { createBooking, isSupabaseConfigured } from "../lib/supabase";
 
 export default function BookConsultation() {
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [messageBody, setMessageBody] = useState("");
   const [error, setError] = useState("");
+  const [serverError, setServerError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setServerError("");
+    setSuccess(false);
+
     if (!email) {
       setError("Please enter your email.");
       return;
@@ -20,8 +32,50 @@ export default function BookConsultation() {
       setError("Please enter a valid email address.");
       return;
     }
-    // Handle success...
-    alert("Request Sent Successfully!");
+
+    const payload = {
+      name: name || null,
+      company: company || null,
+      email,
+      phone: phone || null,
+      message: messageBody || null,
+      status: 'pending',
+    };
+
+    setLoading(true);
+
+    try {
+      if (isSupabaseConfigured) {
+        const { error } = await createBooking(payload);
+        if (error) {
+          setServerError(error.message || 'Failed to submit request.');
+          console.error('Supabase insert error:', error);
+        } else {
+          setSuccess(true);
+          setName('');
+          setCompany('');
+          setEmail('');
+          setPhone('');
+          setMessageBody('');
+        }
+      } else {
+        const pending = JSON.parse(localStorage.getItem('pendingBookings') || '[]');
+        pending.push({ ...payload, created_at: new Date().toISOString() });
+        localStorage.setItem('pendingBookings', JSON.stringify(pending));
+        setSuccess(true);
+        setName('');
+        setCompany('');
+        setEmail('');
+        setPhone('');
+        setMessageBody('');
+        console.warn('Supabase not configured — saved booking locally.');
+      }
+    } catch (err) {
+      console.error(err);
+      setServerError(err.message || 'Unexpected error occurred.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -76,29 +130,55 @@ export default function BookConsultation() {
             viewport={viewportOnce}
             className="glass p-8 sm:p-12"
           >
+            {/* Success Message Banner */}
+            {success && (
+              <div className="mb-6 p-4 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-medium text-center">
+                🎉 Consultation request sent successfully! We'll contact you soon.
+              </div>
+            )}
+
+            {/* Server Error Message Banner */}
+            {serverError && (
+              <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium text-center">
+                ⚠️ {serverError}
+              </div>
+            )}
+
             <form className="space-y-6" noValidate onSubmit={handleSubmit}>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-text-secondary">Full Name</label>
-                  <input type="text" className="input-glass" placeholder="John Doe" />
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="input-glass"
+                    placeholder="John Doe"
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-text-secondary">Company</label>
-                  <input type="text" className="input-glass" placeholder="Acme Corp" />
+                  <input
+                    type="text"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    className="input-glass"
+                    placeholder="Acme Corp"
+                  />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-text-secondary">Work Email</label>
-                  <input 
-                    type="email" 
+                  <input
+                    type="email"
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
                       if (error) setError("");
                     }}
-                    className={`input-glass ${error ? "border-briams-orange focus:border-briams-orange focus:ring-briams-orange/20" : ""}`} 
-                    placeholder="john@acme.com" 
+                    className={`input-glass ${error ? "border-briams-orange focus:border-briams-orange focus:ring-briams-orange/20" : ""}`}
+                    placeholder="john@acme.com"
                   />
                   {error && (
                     <motion.p
@@ -113,19 +193,27 @@ export default function BookConsultation() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-text-secondary">Phone Number</label>
-                  <input type="tel" className="input-glass" placeholder="+1 (555) 000-0000" />
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="input-glass"
+                    placeholder="+1 (555) 000-0000"
+                  />
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-semibold text-text-secondary">What do you want to discuss?</label>
                 <textarea
                   rows={4}
+                  value={messageBody}
+                  onChange={(e) => setMessageBody(e.target.value)}
                   className="input-glass resize-none"
                   placeholder="Tell us a bit about the project or challenge..."
                 />
               </div>
-              <Button type="submit" size="lg" className="w-full justify-center !mt-8">
-                Request Meeting
+              <Button type="submit" size="lg" disabled={loading} className="w-full justify-center !mt-8">
+                {loading ? "Submitting..." : "Request Meeting"}
               </Button>
               <p className="text-center text-xs text-text-muted font-semibold mt-4">
                 We'll reach out within 24 hours to schedule a time.

@@ -1,7 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { Link } from "react-router-dom";
 import { fadeUp, viewportOnce } from "../animations/variants";
 import { CASE_STUDIES } from "../data/content";
 import GlassCard from "../components/ui/GlassCard";
@@ -64,7 +63,7 @@ export default function Work() {
                 whileInView="show"
                 viewport={viewportOnce}
               >
-                <Link to={`/work/${work.id}`} className="block h-full group">
+                <div className="block h-full group cursor-pointer">
                   <GlassCard className="p-8 h-full flex flex-col justify-between overflow-hidden relative border-card-border hover:border-briams-blue/30 transition-all duration-300">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-briams-blue/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform duration-500" />
                     
@@ -103,7 +102,7 @@ export default function Work() {
                       />
                     </div>
                   </GlassCard>
-                </Link>
+                </div>
               </motion.div>
             ))}
           </div>

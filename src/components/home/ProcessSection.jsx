@@ -76,7 +76,13 @@ export default function ProcessSection() {
 
         <div className="mt-20 relative max-w-4xl mx-auto">
           {/* Glowing Gradient Timeline Line */}
-          <div className="absolute left-[27px] md:left-1/2 top-4 bottom-4 w-1 bg-gradient-to-b from-orange-500 via-blue-500 via-emerald-500 via-purple-500 to-amber-500 rounded-full md:-translate-x-1/2 opacity-70" />
+          <div
+            className="absolute left-[27px] md:left-1/2 top-4 bottom-4 w-1 rounded-full md:-translate-x-1/2 opacity-70"
+            style={{
+              background:
+                "linear-gradient(to bottom, #f97316, #3b82f6, #10b981, #a855f7, #f59e0b)",
+            }}
+          />
 
           <div className="space-y-16">
             {PROCESS.map((step, i) => {

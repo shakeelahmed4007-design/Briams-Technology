@@ -33,7 +33,7 @@ export default function TestimonialsSection() {
               <SwiperSlide key={t.id} className="h-auto">
                 <GlassCard className="p-8 h-full flex flex-col justify-between group">
                   <p className="text-[15px] font-medium text-text-secondary leading-relaxed italic">
-                    "{t.quote}"
+                    &ldquo;{t.quote}&rdquo;
                   </p>
                   <div className="mt-8 pt-6 border-t border-card-border flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-briams-orange/20 via-briams-gold/20 to-briams-blue/20 flex items-center justify-center font-display font-extrabold text-briams-orange text-lg border border-briams-orange/30 shadow-xs">
