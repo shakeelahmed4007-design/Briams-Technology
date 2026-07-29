@@ -42,7 +42,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setOpen(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   const isCure = brand === "cure";
   const linksToRender = isCure ? CURE_NAV_LINKS : NAV_LINKS;

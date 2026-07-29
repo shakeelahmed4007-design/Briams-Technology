@@ -19,9 +19,9 @@ export const CURE_NAV_LINKS = [
 export const SITE = {
   name: "Briams Technologies",
   tagline: "Enterprise software, engineered like a product you'd want to use.",
-  email: "hello@briamstechnologies.com",
-  phone: "+92 300 1234567",
-  address: "Karachi, Pakistan",
+  email: "info@briamstechnologies.com",
+  phone: "+17202273775",
+  address: "Yukon, Oklahoma",
   social: {
     linkedin: "#",
     twitter: "#",

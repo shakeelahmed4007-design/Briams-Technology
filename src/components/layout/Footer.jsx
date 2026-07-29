@@ -88,7 +88,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Briams Technologies. All rights reserved.
           </p>
           <p className="text-xs text-white/50 font-mono tracking-wide">
-            Built with care in <span className="text-briams-orange font-bold">Karachi</span>.
+            Built with care in <span className="text-briams-orange font-bold">Yukon</span>.
           </p>
         </div>
       </div>

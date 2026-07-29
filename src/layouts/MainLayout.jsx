@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Navbar from "../components/layout/Navbar";
@@ -12,6 +13,27 @@ import { useLenis } from "../hooks/useLenis";
 export default function MainLayout() {
   useLenis();
   const location = useLocation();
+
+  useEffect(() => {
+    if (!location.hash) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    const id = location.hash.replace("#", "");
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      const fallbackEl = document.getElementById(id);
+      if (fallbackEl) {
+        fallbackEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  }, [location.pathname, location.hash]);
 
   return (
     <div className="relative min-h-screen flex flex-col">

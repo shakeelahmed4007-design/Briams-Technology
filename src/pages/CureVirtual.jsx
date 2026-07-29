@@ -361,7 +361,7 @@ function PricingSection() {
                         : "variant-secondary"
                       }`}
                     >
-                      Get started
+                      Inquire Now
                     </Button>
                   </div>
                 </div>

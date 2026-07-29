@@ -42,7 +42,7 @@ export default function Hero() {
         >
           <motion.div variants={itemVariants}>
             <span className="inline-block px-4.5 py-1.5 rounded-full bg-gradient-to-r from-briams-cyan/15 via-briams-blue/10 to-briams-orange/15 border border-briams-cyan/30 text-xs font-mono uppercase tracking-wider text-briams-blue mb-8 font-bold shadow-xs hover:scale-105 transition-transform cursor-default">
-              Based in Karachi. <span className="text-briams-orange font-extrabold">Building for the world.</span>
+              Based in US. <span className="text-briams-orange font-extrabold">Building for the World.</span>
             </span>
           </motion.div>
           
