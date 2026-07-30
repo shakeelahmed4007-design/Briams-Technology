@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import Home from "../pages/Home";
@@ -13,6 +14,26 @@ import Blog from "../pages/Blog";
 import BlogPost from "../pages/BlogPost";
 import Shop from "../pages/Shop";
 import NotFound from "../pages/NotFound";
+
+function AdminRedirect() {
+  useEffect(() => {
+    const adminUrl = import.meta.env.VITE_ADMIN_URL;
+    if (adminUrl) {
+      window.location.href = adminUrl;
+    } else {
+      window.location.href = 'http://localhost:3000/admin';
+    }
+  }, []);
+  
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-bg text-text-primary">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-8 h-8 border-4 border-briams-cyan border-t-transparent rounded-full animate-spin"></div>
+        <p className="font-medium text-lg">Redirecting to Admin Panel...</p>
+      </div>
+    </div>
+  );
+}
 
 export default function AppRoutes() {
   return (
@@ -30,6 +51,7 @@ export default function AppRoutes() {
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/book-consultation" element={<BookConsultation />} />
+        <Route path="/admin" element={<AdminRedirect />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

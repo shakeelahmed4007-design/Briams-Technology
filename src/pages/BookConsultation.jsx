@@ -45,7 +45,8 @@ export default function BookConsultation() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/leads', {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const response = await fetch(`${apiUrl}/api/leads`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
