@@ -1,0 +1,6 @@
+{
+  "/api/leads/route": "app/api/leads/route.js",
+  "/admin/verifications/page": "app/admin/verifications/page.js",
+  "/admin/cms/page": "app/admin/cms/page.js",
+  "/admin/leads/page": "app/admin/leads/page.js"
+}

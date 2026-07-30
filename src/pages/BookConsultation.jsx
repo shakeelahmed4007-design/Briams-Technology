@@ -45,30 +45,29 @@ export default function BookConsultation() {
     setLoading(true);
 
     try {
-      if (isSupabaseConfigured) {
-        const { error } = await createBooking(payload);
-        if (error) {
-          setServerError(error.message || 'Failed to submit request.');
-          console.error('Supabase insert error:', error);
-        } else {
-          setSuccess(true);
-          setName('');
-          setCompany('');
-          setEmail('');
-          setPhone('');
-          setMessageBody('');
-        }
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...payload,
+          source: 'Consultation Booking'
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setServerError(data.error || 'Failed to submit request.');
+        console.error('API error:', data);
       } else {
-        const pending = JSON.parse(localStorage.getItem('pendingBookings') || '[]');
-        pending.push({ ...payload, created_at: new Date().toISOString() });
-        localStorage.setItem('pendingBookings', JSON.stringify(pending));
         setSuccess(true);
         setName('');
         setCompany('');
         setEmail('');
         setPhone('');
         setMessageBody('');
-        console.warn('Supabase not configured — saved booking locally.');
       }
     } catch (err) {
       console.error(err);

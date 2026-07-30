@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root,
+[data-brand="briams"] {
+  /* 1.1 Main Site Palette */
+  --color-bg: #0E1B33;                         
+  --color-surface: rgba(14, 27, 51, 0.5);      
+  --color-card-bg: rgba(255, 255, 255, 0.05);  
+  --color-card-border: rgba(255, 255, 255, 0.1); 
+  
+  --color-text-primary: #FFFFFF;               
+  --color-text-secondary: #94A3B8;             
+  --color-text-muted: #64748B;                 
+  --color-accent: #F2711F;                     
+  --color-success: #2E9E5B;                    
+  
+  /* Palette Tokens */
+  --color-briams-orange: #F2711F;              
+  --color-briams-gold: #FFB627;                
+  --color-briams-blue: #175FC4;                
+  --color-briams-cyan: #2FC6EA;                
+  --color-deep-navy: #0E1B33;                 
+  
+  /* Gradients */
+  --gradient-cta: linear-gradient(135deg, #F2711F 0%, #FFB627 100%);  
+  --gradient-tech: linear-gradient(135deg, #175FC4 0%, #2FC6EA 100%); 
+}
+
+@layer base {
+  * {
+    border-color: var(--color-card-border);
+  }
+
+  html, body, #__next {
+    height: 100%;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+  }
+}
+
+@layer components {
+  .glass {
+    background: var(--color-card-bg);
+    box-shadow: 0 10px 30px rgba(14, 27, 51, 0.5);
+    border: 1px solid var(--color-card-border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .input-glass {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-card-border);
+    color: var(--color-text-primary);
+    transition: all 0.2s ease;
+  }
+
+  .input-glass:focus {
+    outline: none;
+    border-color: #F2711F;
+    box-shadow: 0 0 0 3px rgba(242, 113, 31, 0.2);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(242, 113, 31, 0.6);
+}
+
+@layer utilities {
+  .text-gradient-cta {
+    background: linear-gradient(135deg, #F2711F 0%, #FFB627 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}

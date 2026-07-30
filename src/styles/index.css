@@ -148,36 +148,43 @@
   .text-gradient-cta {
     background: linear-gradient(135deg, #F2711F 0%, #FFB627 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   .text-gradient-tech {
     background: linear-gradient(135deg, #175FC4 0%, #2FC6EA 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   .text-gradient-briams {
     background: linear-gradient(135deg, #F2711F 0%, #175FC4 50%, #2FC6EA 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   .text-gradient-accent {
     background: linear-gradient(135deg, #F2711F 0%, #FFB627 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   .text-gradient-cure {
     background: linear-gradient(135deg, #123F63 0%, #2E9E5B 50%, #F2711F 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   .text-gradient-purple {
     background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
   .text-gradient-emerald {
     background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 

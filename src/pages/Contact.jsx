@@ -143,40 +143,30 @@ function ContactForm() {
     setLoading(true);
 
     try {
-      if (isSupabaseConfigured) {
-        const { error } = await createMessage({
-          first_name: firstName || null,
-          last_name: lastName || null,
+      const response = await fetch('/api/leads', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: `${firstName} ${lastName}`.trim() || 'Anonymous',
           email,
           message,
-          created_at: new Date().toISOString(),
-        });
-        if (error) {
-          setServerError(error.message || 'Failed to send message.');
-          console.error('Supabase insert error:', error);
-        } else {
-          setSuccess(true);
-          setFirstName("");
-          setLastName("");
-          setEmail("");
-          setMessage("");
-        }
+          source: 'Contact Form',
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setServerError(data.error || 'Failed to send message.');
+        console.error('API error:', data);
       } else {
-        const pending = JSON.parse(localStorage.getItem('pendingMessages') || '[]');
-        pending.push({
-          first_name: firstName || null,
-          last_name: lastName || null,
-          email,
-          message,
-          created_at: new Date().toISOString(),
-        });
-        localStorage.setItem('pendingMessages', JSON.stringify(pending));
         setSuccess(true);
         setFirstName("");
         setLastName("");
         setEmail("");
         setMessage("");
-        console.warn('Supabase not configured — saved message locally.');
       }
     } catch (err) {
       console.error(err);

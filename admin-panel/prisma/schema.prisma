@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Using plain strings for enums and JSON for SQLite compatibility in demo
+
+model User {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  name       String?
+  role       Role     @relation(fields: [roleId], references: [id])
+  roleId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  users       User[]
+}
+
+model VerificationRequest {
+  id          String   @id @default(uuid())
+  providerType String
+  providerName String
+  providerEmail String
+  documents   String
+  status      String @default("PENDING")
+  reviewerId  String?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Lead {
+  id         String   @id @default(uuid())
+  name       String
+  email      String
+  message    String?
+  phone      String?
+  status     String   @default("NEW")
+  source     String?
+  createdAt  DateTime @default(now())
+}
+
+model CaseStudy {
+  id        String   @id @default(uuid())
+  title     String
+  summary   String?
+  content   String?
+  assets    String?
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Transaction {
+  id         String   @id @default(uuid())
+  externalId String?
+  type       String
+  amount     Int
+  currency   String  @default("GHS")
+  status     String
+  metadata   String?
+  createdAt  DateTime @default(now())
+}
