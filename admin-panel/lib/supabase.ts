@@ -9,19 +9,77 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 export async function fetchSupabaseLeads() {
   if (!isSupabaseConfigured) return []
+
+  // 1. Try querying 'leads' table
   try {
     const { data, error } = await supabase
       .from('leads')
       .select('*')
       .order('created_at', { ascending: false })
 
-    if (error) {
-      console.error('[Admin Supabase] Error fetching leads:', error)
-      return []
+    if (!error && data && data.length > 0) {
+      return data
     }
-    return data || []
   } catch (err) {
-    console.error('[Admin Supabase] Exception fetching leads:', err)
+    // Fall through to table aggregation fallback
+  }
+
+  // 2. Fallback: Aggregate from 'bookings', 'messages', and 'waitlist' tables
+  try {
+    const [bookingsRes, messagesRes, waitlistRes] = await Promise.all([
+      supabase.from('bookings').select('*').order('created_at', { ascending: false }),
+      supabase.from('messages').select('*').order('created_at', { ascending: false }),
+      supabase.from('waitlist').select('*').order('created_at', { ascending: false }),
+    ])
+
+    const combined: any[] = []
+
+    if (bookingsRes.data && Array.isArray(bookingsRes.data)) {
+      bookingsRes.data.forEach((b: any) => {
+        combined.push({
+          id: b.id,
+          name: b.name || 'Anonymous',
+          email: b.email,
+          phone: b.phone || null,
+          company: b.company || null,
+          message: b.message || null,
+          source: 'Discovery Call',
+          status: b.status || 'NEW',
+          createdAt: b.created_at || new Date().toISOString(),
+        })
+      })
+    }
+
+    if (messagesRes.data && Array.isArray(messagesRes.data)) {
+      messagesRes.data.forEach((m: any) => {
+        combined.push({
+          id: m.id,
+          name: m.name || 'Anonymous',
+          email: m.email,
+          message: m.message || null,
+          source: 'Contact Form',
+          status: m.status || 'NEW',
+          createdAt: m.created_at || new Date().toISOString(),
+        })
+      })
+    }
+
+    if (waitlistRes.data && Array.isArray(waitlistRes.data)) {
+      waitlistRes.data.forEach((w: any) => {
+        combined.push({
+          id: w.id,
+          name: 'Waitlist User',
+          email: w.email,
+          source: 'CureVirtual Waitlist',
+          status: w.status || 'NEW',
+          createdAt: w.created_at || new Date().toISOString(),
+        })
+      })
+    }
+
+    combined.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    return combined
+  } catch (fallbackErr) {
     return []
   }
 }
@@ -51,12 +109,10 @@ export async function saveSupabaseLead(lead: {
       .select()
 
     if (error) {
-      console.error('[Admin Supabase] Error saving lead:', error)
       return null
     }
     return data ? data[0] : null
   } catch (err) {
-    console.error('[Admin Supabase] Exception saving lead:', err)
     return null
   }
 }
@@ -71,12 +127,10 @@ export async function updateSupabaseLeadStatus(id: string, status: string) {
       .select()
 
     if (error) {
-      console.error('[Admin Supabase] Error updating lead status:', error)
       return null
     }
     return data ? data[0] : null
   } catch (err) {
-    console.error('[Admin Supabase] Exception updating lead status:', err)
     return null
   }
 }
