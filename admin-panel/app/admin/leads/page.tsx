@@ -1,10 +1,8 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../lib/prisma'
 import Link from 'next/link'
 import { Phone, Mail, User, CheckCircle2 } from 'lucide-react'
 import { getStoredLeads } from '../../../lib/lead-store'
 import { fetchSupabaseLeads, isSupabaseConfigured } from '../../../lib/supabase'
-
-const prisma = new PrismaClient()
 
 async function getLeads() {
   if (isSupabaseConfigured) {

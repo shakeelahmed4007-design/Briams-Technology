@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../lib/prisma'
 import { NextResponse } from 'next/server'
 import { saveStoredLead } from '../../../lib/lead-store'
 import { saveSupabaseLead } from '../../../lib/supabase'
-
-const prisma = new PrismaClient()
 
 // CORS Headers for cross-origin requests from Vite frontend
 const corsHeaders = {

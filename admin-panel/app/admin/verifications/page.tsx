@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../lib/prisma'
 import Link from 'next/link'
 import { Eye, CheckCircle, Clock, XCircle } from 'lucide-react'
-
-const prisma = new PrismaClient()
 
 async function getRequests() {
   return await prisma.verificationRequest.findMany({ orderBy: { createdAt: 'desc' } })

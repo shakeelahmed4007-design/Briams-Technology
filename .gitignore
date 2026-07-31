@@ -13,6 +13,11 @@ admin-panel/.next
 .env.local
 .env.*.local
 
+# Database files
+*.db
+*.db-journal
+admin-panel/prisma/*.db
+
 # Logs and system files
 *.log
 .DS_Store

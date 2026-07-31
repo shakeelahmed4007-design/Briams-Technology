@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../lib/prisma'
 import Link from 'next/link'
 import { Plus, Edit2 } from 'lucide-react'
-
-const prisma = new PrismaClient()
 
 async function getCaseStudies() {
   return prisma.caseStudy.findMany({ orderBy: { createdAt: 'desc' } })

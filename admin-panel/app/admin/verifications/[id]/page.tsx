@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../../lib/prisma'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, CheckCircle2, XCircle, FileIcon } from 'lucide-react'
-
-const prisma = new PrismaClient()
 
 export default async function VerificationDetail({ params }: { params: { id: string } }) {
   const id = params.id

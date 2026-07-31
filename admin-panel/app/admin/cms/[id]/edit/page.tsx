@@ -1,9 +1,7 @@
 import Link from 'next/link'
 import { ArrowLeft, Save, Image as ImageIcon, Trash2 } from 'lucide-react'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '../../../../../lib/prisma'
 import { notFound } from 'next/navigation'
-
-const prisma = new PrismaClient()
 
 export default async function EditCaseStudyPage({ params }: { params: { id: string } }) {
   const id = params.id
