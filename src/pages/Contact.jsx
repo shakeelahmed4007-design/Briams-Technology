@@ -143,25 +143,17 @@ function ContactForm() {
     setLoading(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      const response = await fetch(`${apiUrl}/api/leads`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: `${firstName} ${lastName}`.trim() || 'Anonymous',
-          email,
-          message,
-          source: 'Contact Form',
-        })
+      const fullName = `${firstName} ${lastName}`.trim() || 'Anonymous';
+      const { error } = await createMessage({
+        name: fullName,
+        email,
+        message,
+        created_at: new Date().toISOString()
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        setServerError(data.error || 'Failed to send message.');
-        console.error('API error:', data);
+      if (error) {
+        setServerError(error.message || 'Failed to send message.');
+        console.error('Supabase error:', error);
       } else {
         setSuccess(true);
         setFirstName("");

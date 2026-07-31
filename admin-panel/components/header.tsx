@@ -1,6 +1,21 @@
-import { User, Bell, Search } from 'lucide-react'
+'use client'
+
+import { User, Bell, Search, LogOut } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function Header() {
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+      router.push('/login')
+      router.refresh()
+    } catch (e) {
+      console.error('Logout error', e)
+    }
+  }
+
   return (
     <header className="sticky top-0 z-10 flex items-center justify-between bg-briams-navy/80 backdrop-blur-md p-4 px-6 border-b border-card-border shadow-sm">
       <div className="flex-1 max-w-xl flex items-center gap-4">
@@ -22,16 +37,27 @@ export default function Header() {
         
         <div className="h-8 w-px bg-card-border mx-1"></div>
         
-        <div className="flex items-center gap-3 cursor-pointer group">
-          <div className="text-right hidden sm:block">
-            <div className="text-sm font-semibold text-text-primary group-hover:text-briams-cyan transition-colors">Admin User</div>
-            <div className="text-xs text-text-muted font-mono tracking-wide">Super Admin</div>
-          </div>
-          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-briams-blue to-briams-cyan p-[2px]">
-            <div className="w-full h-full rounded-full bg-briams-navy flex items-center justify-center text-white">
-              <User size={18} />
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 cursor-pointer group">
+            <div className="text-right hidden sm:block">
+              <div className="text-sm font-semibold text-text-primary group-hover:text-briams-cyan transition-colors">Admin User</div>
+              <div className="text-xs text-text-muted font-mono tracking-wide">Super Admin</div>
+            </div>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-briams-blue to-briams-cyan p-[2px]">
+              <div className="w-full h-full rounded-full bg-briams-navy flex items-center justify-center text-white">
+                <User size={18} />
+              </div>
             </div>
           </div>
+
+          <button
+            onClick={handleLogout}
+            title="Sign Out"
+            className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-red-500/10 hover:border-red-500/20 text-text-secondary hover:text-red-400 transition-colors ml-2 flex items-center gap-1.5 text-xs font-medium"
+          >
+            <LogOut size={16} />
+            <span className="hidden md:inline">Logout</span>
+          </button>
         </div>
       </div>
     </header>

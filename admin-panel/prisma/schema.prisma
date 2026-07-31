@@ -54,6 +54,7 @@ model Lead {
 model CaseStudy {
   id        String   @id @default(uuid())
   title     String
+  slug      String?
   summary   String?
   content   String?
   assets    String?

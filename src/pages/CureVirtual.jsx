@@ -954,7 +954,10 @@ function WaitlistSection() {
 
     try {
       if (isSupabaseConfigured) {
-        await createWaitlistEntry({ email, created_at: new Date().toISOString() });
+        const { error } = await createWaitlistEntry({ email, created_at: new Date().toISOString() });
+        if (error) {
+          throw new Error(error.message || 'Failed to join waitlist.');
+        }
       } else {
         const pending = JSON.parse(localStorage.getItem('pendingWaitlist') || '[]');
         pending.push({ email, created_at: new Date().toISOString() });

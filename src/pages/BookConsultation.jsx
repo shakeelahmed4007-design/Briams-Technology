@@ -45,23 +45,11 @@ export default function BookConsultation() {
     setLoading(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || '';
-      const response = await fetch(`${apiUrl}/api/leads`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ...payload,
-          source: 'Consultation Booking'
-        })
-      });
+      const { error } = await createBooking(payload);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        setServerError(data.error || 'Failed to submit request.');
-        console.error('API error:', data);
+      if (error) {
+        setServerError(error.message || 'Failed to submit request.');
+        console.error('Supabase error:', error);
       } else {
         setSuccess(true);
         setName('');

@@ -1,24 +1,38 @@
 import { PrismaClient } from '@prisma/client'
 import Link from 'next/link'
 import { Phone, Mail, User, CheckCircle2 } from 'lucide-react'
+import { getStoredLeads } from '../../../lib/lead-store'
+import { fetchSupabaseLeads, isSupabaseConfigured } from '../../../lib/supabase'
 
 const prisma = new PrismaClient()
 
 async function getLeads() {
-  return prisma.lead.findMany({ orderBy: { createdAt: 'desc' } })
+  if (isSupabaseConfigured) {
+    try {
+      const supaLeads = await fetchSupabaseLeads()
+      if (supaLeads && supaLeads.length > 0) {
+        return supaLeads
+      }
+    } catch (e) {
+      console.warn('Supabase fetch error, falling back to local database:', e)
+    }
+  }
+
+  try {
+    return await prisma.lead.findMany({ orderBy: { createdAt: 'desc' } })
+  } catch (e) {
+    console.error('Prisma error loading leads, using stored leads:', e)
+    return getStoredLeads()
+  }
 }
 
 export default async function LeadsPage() {
-  let leads = []
+  let leads: any[] = []
   try {
     leads = await getLeads()
   } catch (e) {
-    console.error("Prisma error, using mock data", e)
-    leads = [
-      { id: '1', name: 'John Doe', email: 'john@example.com', phone: '+1234567890', status: 'NEW' },
-      { id: '2', name: 'Alice Smith', email: 'alice@example.com', phone: '+0987654321', status: 'CONTACTED' },
-      { id: '3', name: 'Bob Johnson', email: 'bob@example.com', phone: '+1122334455', status: 'CLOSED' },
-    ]
+    console.error('Failed to load leads:', e)
+    leads = []
   }
 
   const getStatusColor = (status: string) => {
@@ -44,6 +58,7 @@ export default async function LeadsPage() {
             <thead>
               <tr className="bg-white/5 border-b border-card-border">
                 <th className="px-6 py-4 text-xs font-mono font-bold text-text-muted uppercase tracking-wider">Contact Info</th>
+                <th className="px-6 py-4 text-xs font-mono font-bold text-text-muted uppercase tracking-wider">Source</th>
                 <th className="px-6 py-4 text-xs font-mono font-bold text-text-muted uppercase tracking-wider">Status</th>
                 <th className="px-6 py-4 text-xs font-mono font-bold text-text-muted uppercase tracking-wider text-right">Actions</th>
               </tr>
@@ -57,21 +72,27 @@ export default async function LeadsPage() {
                         <User size={18} />
                       </div>
                       <div>
-                        <div className="font-medium text-white">{l.name}</div>
+                        <div className="font-medium text-white">{l.name || 'Anonymous'}</div>
                         <div className="text-sm text-text-muted mt-0.5 flex items-center gap-1.5"><Mail size={12}/> {l.email}</div>
-                        <div className="text-sm text-text-muted mt-0.5 flex items-center gap-1.5"><Phone size={12}/> {l.phone}</div>
+                        {l.phone && <div className="text-sm text-text-muted mt-0.5 flex items-center gap-1.5"><Phone size={12}/> {l.phone}</div>}
+                        {l.message && <div className="text-xs text-text-secondary mt-1 bg-white/5 p-2 rounded max-w-md italic">{l.message}</div>}
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${getStatusColor(l.status)}`}>
-                      {l.status.replace('_', ' ')}
+                    <span className="text-xs font-mono text-briams-cyan bg-briams-cyan/10 px-2 py-1 rounded border border-briams-cyan/20">
+                      {l.source || 'Website'}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${getStatusColor(l.status || 'NEW')}`}>
+                      {(l.status || 'NEW').replace('_', ' ')}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="inline-flex items-center gap-2">
                       <input type="hidden" name="id" value={l.id} />
-                      <select name="status" defaultValue={l.status} className="input-glass !py-1.5 !px-3 !w-auto text-sm bg-bg border-card-border appearance-none cursor-pointer">
+                      <select name="status" defaultValue={l.status || 'NEW'} className="input-glass !py-1.5 !px-3 !w-auto text-sm bg-bg border-card-border appearance-none cursor-pointer">
                         <option value="NEW">New</option>
                         <option value="CONTACTED">Contacted</option>
                         <option value="IN_PROGRESS">In Progress</option>
@@ -86,7 +107,7 @@ export default async function LeadsPage() {
               ))}
               {leads.length === 0 && (
                 <tr>
-                  <td colSpan={3} className="px-6 py-8 text-center text-text-muted text-sm">
+                  <td colSpan={4} className="px-6 py-8 text-center text-text-muted text-sm">
                     No leads found.
                   </td>
                 </tr>

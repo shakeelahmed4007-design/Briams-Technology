@@ -53,7 +53,7 @@ export default async function EditCaseStudyPage({ params }: { params: { id: stri
               <label className="block text-sm font-medium text-text-secondary mb-1.5">Slug</label>
               <input 
                 type="text" 
-                defaultValue={caseStudy.slug}
+                defaultValue={caseStudy.slug || ''}
                 className="input-glass w-full text-white placeholder-white/20 focus:outline-none focus:ring-1 focus:ring-briams-cyan"
               />
             </div>
@@ -78,7 +78,7 @@ export default async function EditCaseStudyPage({ params }: { params: { id: stri
               <label className="block text-sm font-medium text-text-secondary mb-1.5">Content (Markdown)</label>
               <textarea 
                 rows={10}
-                defaultValue={caseStudy.content}
+                defaultValue={caseStudy.content || ''}
                 className="input-glass w-full text-white placeholder-white/20 focus:outline-none focus:ring-1 focus:ring-briams-cyan resize-y font-mono text-sm leading-relaxed"
               ></textarea>
             </div>

@@ -35,6 +35,21 @@ function AdminRedirect() {
   );
 }
 
+function LoginRedirect() {
+  useEffect(() => {
+    window.location.href = 'http://localhost:3000/login';
+  }, []);
+  
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-bg text-text-primary">
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-8 h-8 border-4 border-briams-cyan border-t-transparent rounded-full animate-spin"></div>
+        <p className="font-medium text-lg">Redirecting to Login...</p>
+      </div>
+    </div>
+  );
+}
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -52,6 +67,7 @@ export default function AppRoutes() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/book-consultation" element={<BookConsultation />} />
         <Route path="/admin" element={<AdminRedirect />} />
+        <Route path="/login" element={<LoginRedirect />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
