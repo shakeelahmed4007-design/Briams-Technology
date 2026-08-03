@@ -33,7 +33,9 @@ function AdminRedirect() {
 
 function LoginRedirect() {
   useEffect(() => {
-    window.location.replace('/login');
+    const adminUrl = import.meta.env.VITE_ADMIN_URL;
+    const loginUrl = adminUrl ? `${adminUrl.replace(/\/$/, '')}/login` : '/login';
+    window.location.replace(loginUrl);
   }, []);
   
   return (
