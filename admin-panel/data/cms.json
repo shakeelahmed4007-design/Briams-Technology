@@ -1,0 +1,30 @@
+[
+  {
+    "id": "cs-1785780564913",
+    "title": "Telehealth",
+    "category": "Fintech",
+    "published": false,
+    "createdAt": "2026-08-03T18:09:24.913Z"
+  },
+  {
+    "id": "1",
+    "title": "CureVirtual Telehealth Platform Scaling",
+    "category": "Healthcare Tech",
+    "published": true,
+    "createdAt": "2026-08-01T17:39:27.736Z"
+  },
+  {
+    "id": "2",
+    "title": "Enterprise Banking Core System Migration",
+    "category": "Fintech",
+    "published": true,
+    "createdAt": "2026-07-30T17:39:27.736Z"
+  },
+  {
+    "id": "3",
+    "title": "AI-Powered Logistics Dispatch Engine",
+    "category": "Logistics & AI",
+    "published": false,
+    "createdAt": "2026-07-29T17:39:27.736Z"
+  }
+]

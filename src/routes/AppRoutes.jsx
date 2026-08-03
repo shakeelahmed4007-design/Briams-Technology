@@ -17,19 +17,15 @@ import NotFound from "../pages/NotFound";
 
 function AdminRedirect() {
   useEffect(() => {
-    const adminUrl = import.meta.env.VITE_ADMIN_URL;
-    if (adminUrl) {
-      window.location.href = adminUrl;
-    } else {
-      window.location.href = 'http://localhost:3000/admin';
-    }
+    const adminUrl = import.meta.env.VITE_ADMIN_URL || '/admin';
+    window.location.replace(adminUrl);
   }, []);
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg text-text-primary">
       <div className="flex flex-col items-center gap-4">
         <div className="w-8 h-8 border-4 border-briams-cyan border-t-transparent rounded-full animate-spin"></div>
-        <p className="font-medium text-lg">Redirecting to Admin Panel...</p>
+        <p className="font-medium text-lg">Opening Admin Panel...</p>
       </div>
     </div>
   );
@@ -37,14 +33,14 @@ function AdminRedirect() {
 
 function LoginRedirect() {
   useEffect(() => {
-    window.location.href = 'http://localhost:3000/login';
+    window.location.replace('/login');
   }, []);
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-bg text-text-primary">
       <div className="flex flex-col items-center gap-4">
         <div className="w-8 h-8 border-4 border-briams-cyan border-t-transparent rounded-full animate-spin"></div>
-        <p className="font-medium text-lg">Redirecting to Login...</p>
+        <p className="font-medium text-lg">Opening Login...</p>
       </div>
     </div>
   );

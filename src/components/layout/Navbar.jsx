@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight, Sparkles } from "lucide-react";
 import { NAV_LINKS, CURE_NAV_LINKS } from "../../constants/nav";
 import { useBrand } from "../../hooks/useBrand";
-import Button from "../ui/Button";
 import logoImg from "../../assets/Logo 23.png";
 
 const navContainer = {
@@ -65,25 +64,29 @@ export default function Navbar() {
       initial="hidden"
       animate="show"
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        scrolled ? "py-2 sm:py-3" : "py-3 sm:py-5"
+        scrolled ? "py-2 sm:py-3" : "py-3.5 sm:py-5"
       }`}
     >
       <div className="container-section px-3 sm:px-6 lg:px-8">
         <div
-          className={`flex items-center justify-between rounded-2xl px-4 sm:px-6 transition-all duration-500 ${
-            scrolled
-              ? isCure
-                ? "py-2 sm:py-2.5 bg-cure-navy shadow-[0_4px_20px_rgba(18,63,99,0.4)] border border-white/10 backdrop-blur-md"
-                : "py-2 sm:py-2.5 bg-briams-navy shadow-[0_4px_20px_rgba(14,27,51,0.4)] border border-white/10 backdrop-blur-md"
-              : isCure
-              ? "bg-cure-navy py-2 border border-transparent"
-              : "bg-briams-navy py-2 border border-transparent"
+          className={`flex items-center justify-between rounded-2xl px-4 sm:px-6 transition-all duration-500 border shadow-2xl backdrop-blur-xl ${
+            isCure
+              ? scrolled
+                ? "py-2.5 sm:py-3 bg-[#123F63]/95 border-emerald-400/30 shadow-[0_8px_32px_rgba(18,63,99,0.6)]"
+                : "py-3 bg-[#123F63]/85 border-white/20 shadow-[0_4px_20px_rgba(18,63,99,0.3)]"
+              : scrolled
+              ? "py-2.5 sm:py-3 bg-[#0E1B33]/95 border-briams-cyan/30 shadow-[0_8px_32px_rgba(14,27,51,0.6)]"
+              : "py-3 bg-[#0E1B33]/85 border-white/20 shadow-[0_4px_20px_rgba(14,27,51,0.3)]"
           }`}
         >
           {/* Logo Brand */}
           <motion.div variants={navItem}>
-            <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group">
-              <div className={`flex items-center justify-center p-1 rounded-xl shrink-0 ${isCure ? "bg-cure-navy" : "bg-briams-navy"}`}>
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className={`flex items-center justify-center p-1.5 rounded-xl border shrink-0 transition-all duration-300 shadow-md ${
+                isCure 
+                  ? "bg-[#0E3250] border-emerald-400/40 group-hover:border-emerald-300" 
+                  : "bg-[#0B1528] border-briams-cyan/40 group-hover:border-briams-cyan"
+              }`}>
                 <img
                   src={logoImg}
                   alt="Briams Technologies Logo"
@@ -91,71 +94,83 @@ export default function Navbar() {
                   style={{ imageRendering: "-webkit-optimize-contrast" }}
                 />
               </div>
-              <span className={`font-display font-semibold tracking-tight text-sm sm:text-lg transition-colors duration-300 text-white ${isCure ? "group-hover:text-cure-orange" : "group-hover:text-briams-orange"}`}>
-                {isCure ? "CureVirtual" : "Briams Technologies"}
-              </span>
-              {isCure && (
-                <span className="hidden xs:inline-block text-[10px] font-mono uppercase tracking-wider text-cure-green bg-cure-green/10 border border-cure-green/20 rounded-full px-2 py-0.5 ml-0.5 font-bold">
-                  by Briams
+              
+              <div className="flex items-center gap-2">
+                <span className="font-display font-extrabold tracking-tight text-base sm:text-xl text-white">
+                  {isCure ? (
+                    <>
+                      Cure<span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400">Virtual</span>
+                    </>
+                  ) : (
+                    <>
+                      Briams <span className="text-transparent bg-clip-text bg-gradient-to-r from-briams-orange via-briams-gold to-briams-cyan">Technologies</span>
+                    </>
+                  )}
                 </span>
-              )}
+
+                {isCure && (
+                  <span className="hidden xs:inline-flex items-center gap-1 text-[11px] font-mono font-extrabold text-emerald-300 bg-emerald-500/20 border border-emerald-400/40 rounded-full px-2.5 py-0.5 shadow-sm">
+                    <Sparkles size={11} className="text-emerald-400" />
+                    by Briams
+                  </span>
+                )}
+              </div>
             </Link>
           </motion.div>
 
           {/* Desktop Links */}
-          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2">
+          <nav className={`hidden lg:flex items-center gap-1.5 xl:gap-2 p-1.5 rounded-full border shadow-inner ${
+            isCure 
+              ? "bg-[#0E3250]/90 border-white/10" 
+              : "bg-[#0B1528]/90 border-white/10"
+          }`}>
             {linksToRender.map((link) => (
               <motion.div key={link.path} variants={navItem} className="relative">
                 <NavLink
                   to={link.path}
                   onClick={(e) => handleNavClick(e, link.path)}
                   className={({ isActive }) =>
-                    `relative px-3.5 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                    `relative px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
                       isActive
                         ? isCure
-                          ? "text-cure-green font-bold"
-                          : "text-briams-cyan font-bold"
-                        : "text-white/70 hover:text-white"
+                          ? "text-white font-extrabold bg-gradient-to-r from-emerald-500/30 to-teal-500/30 border border-emerald-400/50 shadow-[0_0_18px_rgba(46,158,91,0.35)]"
+                          : "text-white font-extrabold bg-gradient-to-r from-briams-orange/30 via-briams-blue/30 to-briams-cyan/30 border border-briams-cyan/50 shadow-[0_0_18px_rgba(47,198,234,0.35)]"
+                        : "text-slate-200 hover:text-white hover:bg-white/10"
                     }`
                   }
                 >
-                  {({ isActive }) => (
-                    <>
-                      <span className="relative z-10">{link.label}</span>
-                      {isActive && (
-                        <motion.div
-                          layoutId="nav-pill"
-                          className="absolute inset-0 bg-white/10 rounded-full"
-                          transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                        />
-                      )}
-                    </>
-                  )}
+                  <span className="relative z-10">{link.label}</span>
                 </NavLink>
               </motion.div>
             ))}
           </nav>
 
-          {/* Desktop CTA */}
+          {/* Desktop CTA Button */}
           <motion.div variants={navItem} className="hidden lg:block">
-            <Button
+            <Link
               to={isCure ? "/products/curevirtual#waitlist" : "/book-consultation"}
-              size="md"
-              className={isCure ? "!bg-cure-orange hover:!bg-cure-green transition-colors" : ""}
+              className={`inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-sm font-display font-black transition-all duration-300 shadow-lg transform hover:scale-105 active:scale-95 group ${
+                isCure
+                  ? "bg-gradient-to-r from-briams-orange via-amber-500 to-briams-orange hover:from-amber-400 hover:to-briams-orange text-white shadow-briams-orange/30"
+                  : "bg-gradient-to-r from-briams-orange via-briams-gold to-briams-orange hover:from-briams-gold hover:to-briams-orange text-[#0E1B33] shadow-briams-orange/30"
+              }`}
             >
-              {isCure ? "Join Waitlist" : "Book Consultation"}
-            </Button>
+              <span>{isCure ? "Join Waitlist" : "Book Consultation"}</span>
+              <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </motion.div>
 
           {/* Mobile Hamburger Toggle Button */}
           <motion.button
             variants={navItem}
-            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors focus:outline-none"
+            className={`lg:hidden w-10 h-10 flex items-center justify-center rounded-full text-white border transition-colors focus:outline-none ${
+              isCure ? "bg-[#0E3250] border-emerald-400/40" : "bg-[#0B1528] border-briams-cyan/40"
+            }`}
             onClick={() => setOpen((o) => !o)}
             aria-label="Toggle menu"
             whileTap={{ scale: 0.9 }}
           >
-            {open ? <X size={22} /> : <Menu size={22} />}
+            {open ? <X size={22} className={isCure ? "text-emerald-400" : "text-briams-cyan"} /> : <Menu size={22} className="text-white" />}
           </motion.button>
         </div>
       </div>
@@ -170,7 +185,11 @@ export default function Navbar() {
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="lg:hidden container-section px-3 sm:px-6 mt-2.5 overflow-hidden"
           >
-            <div className={`${isCure ? "bg-cure-navy border-cure-navy/50" : "bg-briams-navy border-white/10"} rounded-2xl p-4 flex flex-col gap-1.5 shadow-2xl border backdrop-blur-xl`}>
+            <div className={`border rounded-2xl p-4 flex flex-col gap-2 shadow-2xl backdrop-blur-xl ${
+              isCure 
+                ? "bg-[#123F63]/95 border-emerald-400/30" 
+                : "bg-[#0E1B33]/95 border-briams-cyan/30"
+            }`}>
               {linksToRender.map((link, i) => (
                 <motion.div
                   key={link.path}
@@ -182,12 +201,12 @@ export default function Navbar() {
                     to={link.path}
                     onClick={(e) => handleNavClick(e, link.path)}
                     className={({ isActive }) =>
-                      `block px-4 py-3 rounded-xl text-sm font-medium transition-colors duration-300 ${
+                      `block px-4 py-3 rounded-xl text-base font-bold transition-all duration-300 ${
                         isActive
                           ? isCure
-                            ? "text-cure-green bg-white/10 font-bold"
-                            : "text-briams-cyan bg-white/10 font-bold"
-                          : "text-white/80 hover:bg-white/5 hover:text-white"
+                            ? "text-emerald-300 bg-emerald-500/20 border border-emerald-400/40"
+                            : "text-briams-cyan bg-briams-cyan/20 border border-briams-cyan/40"
+                          : "text-slate-200 hover:bg-white/10 hover:text-white"
                       }`
                     }
                   >
@@ -201,14 +220,18 @@ export default function Navbar() {
                 transition={{ delay: 0.25 }}
                 className="pt-3 pb-1"
               >
-                <Button
+                <Link
                   to={isCure ? "/products/curevirtual#waitlist" : "/book-consultation"}
-                  size="md"
                   onClick={() => setOpen(false)}
-                  className={`w-full justify-center ${isCure ? "!bg-cure-orange" : ""}`}
+                  className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-xl font-display font-black text-base transition-all shadow-lg ${
+                    isCure
+                      ? "bg-gradient-to-r from-briams-orange to-amber-500 text-white shadow-briams-orange/30"
+                      : "bg-gradient-to-r from-briams-orange to-briams-gold text-[#0E1B33] shadow-briams-orange/30"
+                  }`}
                 >
-                  {isCure ? "Join Waitlist" : "Book Consultation"}
-                </Button>
+                  <span>{isCure ? "Join Waitlist" : "Book Consultation"}</span>
+                  <ArrowRight size={18} />
+                </Link>
               </motion.div>
             </div>
           </motion.div>

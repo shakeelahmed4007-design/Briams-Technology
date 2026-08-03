@@ -4,28 +4,30 @@
 
 :root,
 [data-brand="briams"] {
-  /* 1.1 Main Site Palette */
-  --color-bg: #0E1B33;                         
-  --color-surface: rgba(14, 27, 51, 0.5);      
-  --color-card-bg: rgba(255, 255, 255, 0.05);  
-  --color-card-border: rgba(255, 255, 255, 0.1); 
+  /* Main Palette */
+  --color-bg: #090F1E;                         
+  --color-surface: rgba(15, 23, 42, 0.65);      
+  --color-card-bg: rgba(30, 41, 59, 0.45);  
+  --color-card-border: rgba(255, 255, 255, 0.12); 
   
-  --color-text-primary: #FFFFFF;               
+  --color-text-primary: #F8FAFC;               
   --color-text-secondary: #94A3B8;             
   --color-text-muted: #64748B;                 
   --color-accent: #F2711F;                     
-  --color-success: #2E9E5B;                    
+  --color-success: #10B981;                    
   
   /* Palette Tokens */
   --color-briams-orange: #F2711F;              
   --color-briams-gold: #FFB627;                
   --color-briams-blue: #175FC4;                
   --color-briams-cyan: #2FC6EA;                
-  --color-deep-navy: #0E1B33;                 
+  --color-deep-navy: #090F1E;                 
   
   /* Gradients */
   --gradient-cta: linear-gradient(135deg, #F2711F 0%, #FFB627 100%);  
-  --gradient-tech: linear-gradient(135deg, #175FC4 0%, #2FC6EA 100%); 
+  --gradient-tech: linear-gradient(135deg, #2FC6EA 0%, #175FC4 100%); 
+  --gradient-purple: linear-gradient(135deg, #A855F7 0%, #EC4899 100%);
+  --gradient-emerald: linear-gradient(135deg, #10B981 0%, #3B82F6 100%);
 }
 
 @layer base {
@@ -47,16 +49,30 @@
   body {
     background-color: var(--color-bg);
     color: var(--color-text-primary);
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(47, 198, 234, 0.08) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(242, 113, 31, 0.08) 0px, transparent 50%),
+      radial-gradient(at 50% 100%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
   }
 }
 
 @layer components {
   .glass {
     background: var(--color-card-bg);
-    box-shadow: 0 10px 30px rgba(14, 27, 51, 0.5);
+    box-shadow: 0 10px 30px rgba(9, 15, 30, 0.7);
     border: 1px solid var(--color-card-border);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .glass-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .glass-hover:hover {
+    border-color: rgba(47, 198, 234, 0.4);
+    box-shadow: 0 0 25px rgba(47, 198, 234, 0.18);
+    transform: translateY(-2px);
   }
 
   .input-glass {
@@ -71,8 +87,8 @@
 
   .input-glass:focus {
     outline: none;
-    border-color: #F2711F;
-    box-shadow: 0 0 0 3px rgba(242, 113, 31, 0.2);
+    border-color: #2FC6EA;
+    box-shadow: 0 0 0 3px rgba(47, 198, 234, 0.25);
   }
 }
 
@@ -86,17 +102,38 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(242, 113, 31, 0.6);
+  background: rgba(47, 198, 234, 0.6);
 }
 
 @layer utilities {
   .text-gradient-cta {
     background: linear-gradient(135deg, #F2711F 0%, #FFB627 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-cyan {
+    background: linear-gradient(135deg, #38BDF8 0%, #2FC6EA 50%, #818CF8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-emerald {
+    background: linear-gradient(135deg, #34D399 0%, #10B981 50%, #059669 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-purple {
+    background: linear-gradient(135deg, #C084FC 0%, #A855F7 50%, #EC4899 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;

@@ -1,17 +1,41 @@
 import { prisma } from '../../../lib/prisma'
 import { NextResponse } from 'next/server'
-import { saveStoredLead } from '../../../lib/lead-store'
-import { saveSupabaseLead } from '../../../lib/supabase'
+import { getStoredLeads, saveStoredLead } from '../../../lib/lead-store'
+import { fetchSupabaseLeads, saveSupabaseLead, isSupabaseConfigured } from '../../../lib/supabase'
 
-// CORS Headers for cross-origin requests from Vite frontend
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 }
 
 export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders })
+}
+
+export async function GET() {
+  if (isSupabaseConfigured) {
+    try {
+      const supaLeads = await fetchSupabaseLeads()
+      if (supaLeads && supaLeads.length > 0) {
+        return NextResponse.json(supaLeads, { headers: corsHeaders })
+      }
+    } catch (e) {
+      console.warn('Supabase fetch error, using local database:', e)
+    }
+  }
+
+  try {
+    const dbLeads = await prisma.lead.findMany({ orderBy: { createdAt: 'desc' } })
+    if (dbLeads && dbLeads.length > 0) {
+      return NextResponse.json(dbLeads, { headers: corsHeaders })
+    }
+  } catch (e) {
+    // ignore
+  }
+
+  const stored = await getStoredLeads()
+  return NextResponse.json(stored, { headers: corsHeaders })
 }
 
 export async function POST(req: Request) {
@@ -27,13 +51,13 @@ export async function POST(req: Request) {
       name: name || 'Anonymous',
       email,
       phone: phone || null,
-      message: message ? (company ? `Company: ${company}\n\n${message}` : message) : message || null,
+      message: message || null,
       company: company || null,
       source: source || 'Website',
-      status: 'NEW',
+      status: 'NEW' as const,
     }
 
-    // 1. Try saving to Supabase
+    // 1. Save to Supabase
     try {
       await saveSupabaseLead(leadPayload)
     } catch (supaErr) {
@@ -48,7 +72,7 @@ export async function POST(req: Request) {
           name: leadPayload.name,
           email: leadPayload.email,
           phone: leadPayload.phone,
-          message: leadPayload.message,
+          message: leadPayload.company ? `Company: ${leadPayload.company}\n\n${leadPayload.message || ''}` : leadPayload.message,
           source: leadPayload.source,
         }
       })

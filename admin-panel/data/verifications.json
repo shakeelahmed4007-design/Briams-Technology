@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "providerName": "Dr. Jane Smith",
+    "providerEmail": "jane.smith@curevirtual.com",
+    "providerType": "MEDICAL",
+    "status": "APPROVED",
+    "createdAt": "2026-08-03T15:39:27.735Z"
+  },
+  {
+    "id": "2",
+    "providerName": "TechCorp Healthcare Solutions",
+    "providerEmail": "support@techcorp.com",
+    "providerType": "TECHNICAL",
+    "status": "APPROVED",
+    "createdAt": "2026-08-02T17:39:27.735Z"
+  },
+  {
+    "id": "3",
+    "providerName": "FastFix Medical Logistics",
+    "providerEmail": "info@fastfix.com",
+    "providerType": "SERVICE",
+    "status": "APPROVED",
+    "createdAt": "2026-08-01T17:39:27.735Z"
+  }
+]

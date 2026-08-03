@@ -1,35 +1,66 @@
-import { prisma } from '../../../lib/prisma'
-import Link from 'next/link'
-import { Eye, CheckCircle, Clock, XCircle } from 'lucide-react'
+'use client'
 
-async function getRequests() {
-  return await prisma.verificationRequest.findMany({ orderBy: { createdAt: 'desc' } })
+import { useState, useEffect } from 'react'
+import { Eye, CheckCircle, Clock, XCircle, ShieldCheck, Zap, RefreshCw } from 'lucide-react'
+
+type Verification = {
+  id: string
+  providerName: string
+  providerEmail: string
+  providerType: 'MEDICAL' | 'TECHNICAL' | 'SERVICE'
+  status: 'PENDING' | 'APPROVED' | 'REJECTED'
+  createdAt: string
 }
 
-export default async function VerificationsPage() {
-  let requests = []
-  try {
-    requests = await getRequests()
-  } catch (e) {
-    console.error("Prisma error, using mock data", e)
-    requests = [
-      { id: '1', providerName: 'Dr. Jane Smith', providerEmail: 'jane.smith@example.com', providerType: 'MEDICAL', status: 'PENDING' },
-      { id: '2', providerName: 'TechCorp Support', providerEmail: 'support@techcorp.com', providerType: 'TECHNICAL', status: 'APPROVED' },
-      { id: '3', providerName: 'FastFix Logistics', providerEmail: 'info@fastfix.com', providerType: 'SERVICE', status: 'REJECTED' },
-    ]
+export default function VerificationsPage() {
+  const [requests, setRequests] = useState<Verification[]>([])
+  const [loading, setLoading] = useState(true)
+
+  const fetchVerifications = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/verifications')
+      if (res.ok) {
+        const data = await res.json()
+        setRequests(data)
+      }
+    } catch (e) {
+      console.error('Failed to load verifications:', e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchVerifications()
+  }, [])
+
+  const handleStatusUpdate = async (id: string, newStatus: 'PENDING' | 'APPROVED' | 'REJECTED') => {
+    try {
+      const res = await fetch(`/api/verifications/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      })
+      if (res.ok) {
+        setRequests(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r))
+      }
+    } catch (e) {
+      console.error('Failed to update status:', e)
+    }
   }
 
   const getStatusColor = (status: string) => {
-    switch(status) {
-      case 'PENDING': return 'bg-briams-orange/10 text-briams-orange border-briams-orange/20'
-      case 'APPROVED': return 'bg-cure-green/10 text-cure-green border-cure-green/20'
-      case 'REJECTED': return 'bg-red-500/10 text-red-500 border-red-500/20'
-      default: return 'bg-white/10 text-text-muted border-white/20'
+    switch (status) {
+      case 'PENDING': return 'bg-amber-500/15 text-amber-400 border-amber-500/30'
+      case 'APPROVED': return 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+      case 'REJECTED': return 'bg-red-500/15 text-red-400 border-red-500/30'
+      default: return 'bg-slate-800 text-slate-400 border-slate-700'
     }
   }
 
   const getStatusIcon = (status: string) => {
-    switch(status) {
+    switch (status) {
       case 'PENDING': return <Clock size={12} />
       case 'APPROVED': return <CheckCircle size={12} />
       case 'REJECTED': return <XCircle size={12} />
@@ -38,57 +69,86 @@ export default async function VerificationsPage() {
   }
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
-      <div>
-        <h1 className="text-3xl font-display font-bold text-white mb-1">Verification Queue</h1>
-        <p className="text-sm text-text-secondary">Review and approve provider applications.</p>
+    <div className="space-y-6 animate-in fade-in duration-500 pb-12">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-display font-extrabold text-white">
+            <span className="text-gradient-emerald">CureVirtual Verifications</span> Queue
+          </h1>
+          <p className="text-sm text-slate-400 mt-1 font-medium">Review and verify medical, technical & service provider credentials.</p>
+        </div>
+        <button
+          onClick={fetchVerifications}
+          className="p-2.5 rounded-xl bg-slate-900/60 border border-slate-700 text-slate-300 hover:text-white hover:border-emerald-400/40 transition-colors flex items-center gap-2 text-sm font-semibold self-start sm:self-auto"
+        >
+          <RefreshCw size={16} className={loading ? 'animate-spin text-emerald-400' : 'text-emerald-400'} />
+          <span>Refresh Queue</span>
+        </button>
       </div>
 
-      <div className="glass rounded-xl overflow-hidden border border-card-border">
+      <div className="glass rounded-2xl overflow-hidden border border-card-border shadow-glass-lg">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-white/5 border-b border-card-border">
-                <th className="px-6 py-4 text-xs font-mono font-bold text-text-muted uppercase tracking-wider">Provider</th>
-                <th className="px-6 py-4 text-xs font-mono font-bold text-text-muted uppercase tracking-wider">Type</th>
-                <th className="px-6 py-4 text-xs font-mono font-bold text-text-muted uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-xs font-mono font-bold text-text-muted uppercase tracking-wider text-right">Actions</th>
+              <tr className="bg-slate-900/80 border-b border-card-border">
+                <th className="px-6 py-4 text-xs font-mono font-bold text-sky-400 uppercase tracking-wider">Provider Info</th>
+                <th className="px-6 py-4 text-xs font-mono font-bold text-purple-400 uppercase tracking-wider">Type</th>
+                <th className="px-6 py-4 text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-4 text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-card-border">
-              {requests.map((r: any) => (
-                <tr key={r.id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4">
-                    <div className="font-medium text-white">{r.providerName}</div>
-                    <div className="text-sm text-text-muted mt-0.5">{r.providerEmail}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="text-sm text-text-secondary font-mono bg-white/5 px-2 py-1 rounded-md border border-white/10">
-                      {r.providerType}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold border ${getStatusColor(r.status)}`}>
-                      {getStatusIcon(r.status)} {r.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <Link 
-                      href={`/admin/verifications/${r.id}`} 
-                      className="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 text-briams-cyan hover:bg-white/10 hover:text-white transition-colors border border-white/10"
-                      title="View Details"
-                    >
-                      <Eye size={16} />
-                    </Link>
+            <tbody className="divide-y divide-card-border/60">
+              {loading ? (
+                <tr>
+                  <td colSpan={4} className="px-6 py-8 text-center text-slate-400 text-sm font-mono">
+                    Loading verifications queue...
                   </td>
                 </tr>
-              ))}
-              {requests.length === 0 && (
+              ) : requests.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-8 text-center text-text-muted text-sm">
+                  <td colSpan={4} className="px-6 py-8 text-center text-slate-400 text-sm">
                     No verification requests found.
                   </td>
                 </tr>
+              ) : (
+                requests.map((r) => (
+                  <tr key={r.id} className="hover:bg-slate-900/40 transition-colors">
+                    <td className="px-6 py-4">
+                      <div className="font-bold text-white text-sm">{r.providerName}</div>
+                      <div className="text-xs text-sky-300 font-mono mt-0.5">{r.providerEmail}</div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="text-xs text-purple-300 font-mono bg-purple-500/15 px-3 py-1 rounded-full border border-purple-500/30 font-bold">
+                        {r.providerType}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold border ${getStatusColor(r.status)}`}>
+                        {getStatusIcon(r.status)} {r.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="inline-flex items-center gap-2">
+                        {r.status !== 'APPROVED' && (
+                          <button
+                            onClick={() => handleStatusUpdate(r.id, 'APPROVED')}
+                            className="px-3 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-400 hover:bg-emerald-500 hover:text-slate-950 transition-all text-xs font-extrabold border border-emerald-500/30"
+                          >
+                            Approve
+                          </button>
+                        )}
+                        {r.status !== 'REJECTED' && (
+                          <button
+                            onClick={() => handleStatusUpdate(r.id, 'REJECTED')}
+                            className="px-3 py-1.5 rounded-xl bg-red-500/15 text-red-400 hover:bg-red-500 hover:text-white transition-all text-xs font-extrabold border border-red-500/30"
+                          >
+                            Reject
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))
               )}
             </tbody>
           </table>

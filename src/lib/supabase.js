@@ -51,8 +51,8 @@ export { supabase };
 // ── Fallback helper to save to local API/admin store ─────────────────────────
 async function saveToLocalApi(payload) {
   try {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-    const response = await fetch(`${apiUrl}/api/leads`, {
+    const endpoint = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/leads` : '/api/leads';
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
@@ -61,7 +61,7 @@ async function saveToLocalApi(payload) {
       return await response.json();
     }
   } catch (err) {
-    console.warn('[Local API Sync] Fallback request warning:', err.message);
+    console.warn('[Local API Sync] Request warning:', err.message);
   }
   return null;
 }
