@@ -2,10 +2,10 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Home, Users, FileText, Settings, Zap, LogOut, BarChart3 } from 'lucide-react'
+import { Home, Users, FileText, Settings, Zap, LogOut, BarChart3, X } from 'lucide-react'
 import { useRouter, usePathname } from 'next/navigation'
 
-export default function Sidebar() {
+export default function Sidebar({ isMobile, onClose }: { isMobile?: boolean, onClose?: () => void }) {
   const pathname = usePathname()
   
   const isActive = (path: string) => pathname === path
@@ -25,6 +25,9 @@ export default function Sidebar() {
     return (
       <Link 
         href={href} 
+        onClick={() => {
+          if (isMobile && onClose) onClose()
+        }}
         className={`flex items-center gap-3.5 p-3.5 rounded-2xl transition-all duration-300 font-semibold text-base relative group ${
           active 
             ? 'bg-gradient-to-r from-briams-cyan/25 to-briams-blue/15 text-white border-l-4 border-briams-cyan shadow-[0_0_25px_rgba(47,198,234,0.2)] font-extrabold' 
@@ -38,12 +41,12 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-80 bg-slate-950/85 backdrop-blur-xl border-r border-card-border min-h-screen flex flex-col relative z-20 shadow-glass-lg shrink-0">
+    <aside className="w-80 bg-slate-950/85 backdrop-blur-xl border-r border-card-border h-full min-h-screen flex flex-col relative z-20 shadow-glass-lg shrink-0">
       {/* Brand Header */}
-      <div className="p-6 pb-5 border-b border-card-border/60">
+      <div className="p-6 pb-5 border-b border-card-border/60 flex items-center justify-between">
         <Link href="/admin" className="flex items-center gap-3.5 group">
           <div className="p-2.5 rounded-2xl bg-gradient-to-tr from-briams-blue/40 to-briams-cyan/30 border border-briams-cyan/40 flex-shrink-0 group-hover:border-briams-cyan shadow-glow-blue transition-all duration-300">
-            <Image src="/logo.png" alt="Logo" width={36} height={36} className="object-contain" />
+            <Image src="/logo.png" alt="Logo" width={36} height={36} className="object-contain" style={{ width: 'auto', height: 'auto' }} />
           </div>
           <div className="flex flex-col">
             <span className="font-display font-black tracking-tight text-2xl text-gradient-cta">
@@ -54,6 +57,14 @@ export default function Sidebar() {
             </span>
           </div>
         </Link>
+        {isMobile && onClose && (
+          <button 
+            onClick={onClose}
+            className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition-colors"
+          >
+            <X size={24} />
+          </button>
+        )}
       </div>
 
       {/* Navigation Sections */}

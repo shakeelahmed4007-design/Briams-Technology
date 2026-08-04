@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { User, Bell, Search, LogOut, CheckCheck, Zap, Users, Calendar, ArrowRight } from 'lucide-react'
+import { User, Bell, Search, LogOut, CheckCheck, Zap, Users, Calendar, ArrowRight, Menu } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface NotificationItem {
   id: string
@@ -45,7 +46,7 @@ const initialNotifications: NotificationItem[] = [
   }
 ]
 
-export default function Header() {
+export default function Header({ onMenuClick }: { onMenuClick?: () => void }) {
   const router = useRouter()
   const [showNotifications, setShowNotifications] = useState(false)
   const [notifications, setNotifications] = useState<NotificationItem[]>(initialNotifications)
@@ -107,8 +108,25 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between bg-slate-950/90 backdrop-blur-xl p-4 px-6 border-b border-card-border shadow-sm">
+      {/* Mobile Menu & Logo */}
+      <div className="flex lg:hidden items-center gap-3">
+        {onMenuClick && (
+          <button 
+            onClick={onMenuClick}
+            className="p-2 -ml-2 text-slate-400 hover:text-white transition-colors rounded-xl hover:bg-slate-800"
+          >
+            <Menu size={24} />
+          </button>
+        )}
+        <Link href="/admin" className="flex items-center gap-2">
+          <div className="p-1.5 rounded-xl bg-gradient-to-tr from-briams-blue/40 to-briams-cyan/30 border border-briams-cyan/40 shadow-glow-blue">
+            <Image src="/logo.png" alt="Logo" width={28} height={28} className="object-contain" style={{ width: 'auto', height: 'auto' }} />
+          </div>
+        </Link>
+      </div>
+
       {/* Search Input */}
-      <div className="flex-1 max-w-xl flex items-center gap-4">
+      <div className="flex-1 max-w-xl flex items-center gap-4 ml-4 lg:ml-0">
         <div className="relative w-full max-w-lg hidden md:block">
           <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-sky-400" />
           <input 
