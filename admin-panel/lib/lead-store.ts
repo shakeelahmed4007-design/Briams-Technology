@@ -80,15 +80,7 @@ async function ensureStoreFile() {
 export async function getStoredLeads(): Promise<LeadRecord[]> {
   if (memoryLeads) return memoryLeads
   await ensureStoreFile()
-  try {
-    const content = await fs.readFile(storeFile, 'utf8')
-    const leads = JSON.parse(content) as LeadRecord[]
-    memoryLeads = leads.length > 0 ? leads : [...initialSeedLeads]
-    return memoryLeads
-  } catch {
-    memoryLeads = [...initialSeedLeads]
-    return memoryLeads
-  }
+  return memoryLeads ?? [...initialSeedLeads]
 }
 
 export async function saveStoredLead(input: Partial<LeadRecord> & { email: string; name?: string }): Promise<LeadRecord> {

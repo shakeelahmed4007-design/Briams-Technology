@@ -44,15 +44,7 @@ async function ensureStoreFile() {
 export async function getStoredVerifications(): Promise<VerificationRecord[]> {
   if (memoryVerifications) return memoryVerifications
   await ensureStoreFile()
-  try {
-    const content = await fs.readFile(storeFile, 'utf8')
-    const records = JSON.parse(content) as VerificationRecord[]
-    memoryVerifications = records.length > 0 ? records : [...initialSeed]
-    return memoryVerifications
-  } catch {
-    memoryVerifications = [...initialSeed]
-    return memoryVerifications
-  }
+  return memoryVerifications ?? [...initialSeed]
 }
 
 export async function updateVerificationStatus(id: string, status: 'PENDING' | 'APPROVED' | 'REJECTED'): Promise<VerificationRecord | null> {

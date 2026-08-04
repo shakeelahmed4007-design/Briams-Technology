@@ -15,6 +15,7 @@
     { "source": "/api/(.*)", "destination": "admin-panel/api/$1" },
     { "source": "/admin(.*)", "destination": "admin-panel/admin$1" },
     { "source": "/login(.*)", "destination": "admin-panel/login$1" },
+    { "source": "/_next/(.*)", "destination": "admin-panel/_next/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "env": {

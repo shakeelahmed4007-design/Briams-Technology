@@ -5,9 +5,11 @@ import { getStoredCaseStudies } from '../../lib/cms-store'
 import Link from 'next/link'
 
 export default async function AdminIndex() {
-  const leads = await getStoredLeads()
-  const verifications = await getStoredVerifications()
-  const caseStudies = await getStoredCaseStudies()
+  const [leads, verifications, caseStudies] = await Promise.all([
+    getStoredLeads(),
+    getStoredVerifications(),
+    getStoredCaseStudies(),
+  ])
 
   const pendingVerifications = verifications.filter(v => v.status === 'PENDING').length
   const publishedPosts = caseStudies.filter(c => c.published).length

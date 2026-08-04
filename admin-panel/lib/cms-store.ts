@@ -43,15 +43,7 @@ async function ensureStoreFile() {
 export async function getStoredCaseStudies(): Promise<CaseStudyRecord[]> {
   if (memoryCaseStudies) return memoryCaseStudies
   await ensureStoreFile()
-  try {
-    const content = await fs.readFile(storeFile, 'utf8')
-    const records = JSON.parse(content) as CaseStudyRecord[]
-    memoryCaseStudies = records.length > 0 ? records : [...initialSeed]
-    return memoryCaseStudies
-  } catch {
-    memoryCaseStudies = [...initialSeed]
-    return memoryCaseStudies
-  }
+  return memoryCaseStudies ?? [...initialSeed]
 }
 
 export async function toggleCaseStudyPublished(id: string): Promise<CaseStudyRecord | null> {
