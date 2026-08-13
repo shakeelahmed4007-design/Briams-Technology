@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaLinkedinIn, FaTwitter, FaGithub, FaInstagram } from "react-icons/fa";
 import { NAV_LINKS, SITE } from "../../constants/nav";
 import logoImg from "../../assets/Logo 23.png";
+import PrivacyPolicyModal from "../ui/PrivacyPolicyModal";
 
 const socialIcons = {
   linkedin: FaLinkedinIn,
@@ -11,6 +13,8 @@ const socialIcons = {
 };
 
 export default function Footer() {
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+
   return (
     <footer className="relative bg-briams-navy text-white overflow-hidden pt-20 pb-8">
       {/* Brand Guideline: Deep Navy for footer */}
@@ -83,15 +87,33 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/50 font-mono tracking-wide">
+        <div className="mt-20 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50 font-mono tracking-wide">
+          <p className="text-center sm:text-left">
             © {new Date().getFullYear()} Briams Technologies. All rights reserved.
           </p>
-          <p className="text-xs text-white/50 font-mono tracking-wide">
-            Built with care in <span className="text-briams-orange font-bold">Yukon</span>.
-          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-4 text-center sm:text-right">
+            <p>
+              Built with care in <span className="text-briams-orange font-bold">Yukon</span>.
+            </p>
+            <div className="flex items-center gap-4">
+              <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-white/20"></span>
+              <button 
+                onClick={() => setIsPrivacyModalOpen(true)}
+                className="hover:text-white transition-colors cursor-pointer text-left"
+              >
+                Privacy Policy
+              </button>
+              <span className="hidden sm:inline-block w-1 h-1 rounded-full bg-white/20"></span>
+              <Link to="/terms" className="hover:text-white transition-colors">Terms & Conditions</Link>
+            </div>
+          </div>
         </div>
       </div>
+
+      <PrivacyPolicyModal 
+        isOpen={isPrivacyModalOpen} 
+        onClose={() => setIsPrivacyModalOpen(false)} 
+      />
     </footer>
   );
 }
